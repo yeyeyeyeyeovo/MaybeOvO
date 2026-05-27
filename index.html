@@ -137,13 +137,13 @@
                     <p>暖黄的灯光、磨砂的木桌、老旧的唱片机，这些元素几乎没有变过。唯一变化的，是坐在角落写东西的我。</p>
                     
                     <h2>为什么喜欢深夜</h2>
-                    <p>白天太吵，深夜却安静得像另一个世界。思维好像会变得更清晰，情感也更容易被触动。</p>
+                    <p>白天太咧，深夜却安静得像另一个世界。思维好像会变得更清晰，情感也更容易被触动。</p>
                     <p>我常常在这里写完一篇文章，或者只是发呆。店员已经认识我了，会默认给我加一份桂花拿铁。</p>
                     
                     <h2>小确幸</h2>
                     <p>真正让人快乐的，从来不是什么大事，而是一些很小的瞬间：</p>
                     <ul style="margin-left:1.25rem; margin-bottom:1.25rem;">
-                        <li>雨点敲在玻璃上的声音</li>
+                        <li>雨点记在玻璃上的声音</li>
                         <li>咖啡第一口苦、第二口甜</li>
                         <li>手机突然没电，于是真正把注意力放在眼前</li>
                     </ul>
@@ -207,7 +207,7 @@
                     <h2>最真实的变化</h2>
                     <p>最大的变化不是收入减少，而是时间变多了。</p>
                     <p>以前每天通勤 2 小时，现在走路 8 分钟就能到「公司」（其实就是家里的书房）。</p>
-                    <p>我开始有时间认真做饭、散步、和父母聊天、甚至发呆。</p>
+                    <p>我开始有时间认真做饯、散步、和父母聊天、甚至发呆。</p>
                     
                     <h2>也遇到的困难</h2>
                     <p>当然也有不适应的时候：信息闭塞、选择变少、朋友越来越少。</p>
@@ -229,7 +229,7 @@
                     
                     <h2>慢下来的价值</h2>
                     <ul style="margin-left:1.25rem; margin-bottom:1.25rem;">
-                        <li>慢吃饭 → 胃舒服，体重也稳了</li>
+                        <li>慢吃饯 → 胃舒服，体重也稳了</li>
                         <li>慢思考 → 不会做很多蠢决定</li>
                         <li>慢交朋友 → 关系反而更持久</li>
                         <li>慢写东西 → 偶尔能写出让自己都惊讶的句子</li>
@@ -300,9 +300,10 @@
             <div class="flex flex-col md:flex-row items-center gap-12">
                 <!-- 左侧文字 -->
                 <div class="flex-1 text-center md:text-left">
-                    <div class="inline-flex items-center gap-x-2 px-4 py-1.5 bg-white rounded-3xl shadow-sm border border-slate-100 mb-6">
+                    <div onclick="cycleDadStatus()" 
+                         class="inline-flex items-center gap-x-2 px-4 py-1.5 bg-white rounded-3xl shadow-sm border border-slate-100 mb-6 cursor-pointer hover:border-emerald-200 active:bg-emerald-50 transition-colors group">
                         <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-                        <span class="text-sm text-slate-600">目前在互联网躺尸</span>
+                        <span id="dad-status" class="text-sm text-slate-600 group-hover:text-emerald-600 transition-colors">目前在互联网躺尸</span>
                     </div>
                     
                     <h1 class="text-6xl md:text-7xl font-semibold tracking-tighter mb-4" id="hero-name">
@@ -380,6 +381,77 @@
                     <div class="text-center mt-3 text-xs text-slate-500">点击可放大查看完整截图</div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- ==================== 技术痕迹（高级感彩蛋） ==================== -->
+    <div id="tech" class="max-w-5xl mx-auto px-6 py-16 scroll-mt-16 border-t border-slate-100">
+        <div class="max-w-2xl mx-auto text-center mb-10">
+            <h2 class="text-4xl font-semibold tracking-tight mb-3 section-title">技术痕迹</h2>
+            <p class="text-slate-600">其实也没写多少，别看了</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+            
+            <!-- 爸爸的终端（最能装逼的部分） -->
+            <div class="lg:col-span-3 bg-[#0a0c10] border border-slate-800 rounded-3xl p-5 shadow-inner overflow-hidden">
+                <div class="flex items-center justify-between mb-3 px-1">
+                    <div class="flex items-center gap-x-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                        <span class="ml-3 text-emerald-400 text-xs font-mono tracking-[1px]">dad@night ~ lying-corpse</span>
+                    </div>
+                    <span class="text-[10px] text-slate-500 font-mono">type "help"</span>
+                </div>
+                
+                <!-- Terminal Body -->
+                <div id="terminal-body" 
+                     class="bg-black/60 rounded-2xl p-4 h-[268px] font-mono text-sm text-emerald-300 overflow-y-auto leading-relaxed border border-slate-800"
+                     style="scrollbar-width: thin;">
+                    <div id="terminal-output" class="space-y-1 text-[13px]"></div>
+                    
+                    <!-- Input Line -->
+                    <div class="flex items-center gap-2 mt-2">
+                        <span class="text-emerald-500 select-none">$</span>
+                        <input id="terminal-input" 
+                               type="text" 
+                               class="flex-1 bg-transparent outline-none text-emerald-300 placeholder:text-emerald-900 font-mono text-sm"
+                               placeholder="输入命令... (help / matrix / roast / status)"
+                               autocomplete="off"
+                               onkeydown="handleTerminalInput(event)">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 躺尸热力图（GitHub 风格） -->
+            <div class="lg:col-span-2 bg-white border border-slate-100 rounded-3xl p-5 shadow-sm">
+                <div class="flex items-center justify-between mb-4 px-1">
+                    <div>
+                        <div class="font-semibold text-slate-800 tracking-tight">躺尸热力图</div>
+                        <div class="text-[10px] text-slate-400">2025-2026 · 其实全是摇烂</div>
+                    </div>
+                    <div class="text-right text-[10px] text-emerald-600 font-mono">47 commits<br><span class="text-slate-400">（99% 是躺下）</span></div>
+                </div>
+                
+                <!-- SVG 热力图 -->
+                <div id="heatmap-container" class="overflow-x-auto pb-2"></div>
+                
+                <div class="mt-3 text-[10px] text-slate-400 flex items-center justify-between px-1">
+                    <span>Less</span>
+                    <div class="flex gap-1">
+                        <div class="w-2.5 h-2.5 bg-slate-100 rounded-sm"></div>
+                        <div class="w-2.5 h-2.5 bg-emerald-200 rounded-sm"></div>
+                        <div class="w-2.5 h-2.5 bg-emerald-400 rounded-sm"></div>
+                        <div class="w-2.5 h-2.5 bg-emerald-600 rounded-sm"></div>
+                    </div>
+                    <span>More (其实没有)</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-5 text-[11px] text-slate-400">
+            提示：终端里输入 <span class="font-mono text-emerald-600">matrix</span> 有惊喜 · 键盘敲 ↑↑↓↓←→←→BA 也会触发
         </div>
     </div>
 
@@ -520,6 +592,66 @@
                  class="max-w-[95vw] max-h-[88vh] rounded-3xl shadow-2xl object-contain bg-white">
         </div>
     </div>
+
+    <!-- ==================== 问爸爸弹窗（有意思的彩蛋） ==================== -->
+    <div id="dad-chat-modal" onclick="if (event.target.id === 'dad-chat-modal') closeDadChat()" 
+         class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[120] flex items-center justify-center p-4">
+        <div onclick="event.stopImmediatePropagation()" 
+             class="modal bg-white w-full max-w-md max-h-[88vh] rounded-3xl overflow-hidden shadow-2xl flex flex-col border border-slate-100">
+            
+            <!-- Modal Header -->
+            <div class="px-6 pt-5 pb-4 border-b flex items-center justify-between bg-slate-50">
+                <div class="flex items-center gap-x-3">
+                    <div class="w-9 h-9 bg-emerald-600 rounded-2xl flex items-center justify-center text-white text-lg flex-shrink-0">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+                    <div>
+                        <div class="font-semibold tracking-tight">问爸爸</div>
+                        <div class="text-[10px] text-emerald-600 -mt-0.5">但别指望有好答案</div>
+                    </div>
+                </div>
+                <button onclick="closeDadChat()" 
+                        class="text-slate-400 hover:text-slate-700 p-2 -mr-1 -mt-1 transition-colors">
+                    <i class="fa-solid fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Chat Area -->
+            <div id="dad-chat-area" 
+                 class="flex-1 overflow-y-auto p-5 space-y-4 bg-white text-sm leading-relaxed min-h-[240px] max-h-[52vh]">
+                <!-- 消息由 JS 动态插入 -->
+            </div>
+            
+            <!-- Quick hints -->
+            <div class="px-5 pt-1 pb-2 text-[10px] text-slate-400 border-t bg-white">
+                试试输入：钱、女朋友、为什么、你好、滚
+            </div>
+            
+            <!-- Input Area -->
+            <div class="p-4 border-t bg-slate-50 flex gap-2">
+                <input id="dad-chat-input" 
+                       type="text" 
+                       placeholder="跟爸爸说点啥... (别废话)" 
+                       class="flex-1 bg-white border border-slate-200 focus:border-emerald-400 rounded-2xl px-4 py-2.5 text-sm outline-none"
+                       onkeydown="if (event.key === 'Enter') sendDadMessage()">
+                <button onclick="sendDadMessage()" 
+                        class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 transition-colors text-white rounded-2xl text-sm font-medium flex items-center gap-x-1.5 shadow">
+                    <span>发送</span>
+                    <i class="fa-solid fa-paper-plane text-xs"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 悬浮「问爸爸」按钮（毒舌彩蛋） -->
+    <button onclick="openDadChat()" 
+            class="fixed bottom-6 right-6 z-[90] flex items-center gap-x-2.5 px-5 py-3.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white text-sm font-medium rounded-3xl shadow-xl shadow-emerald-600/30 transition-all active:scale-[0.985] hover:shadow-2xl">
+        <i class="fa-solid fa-comment-dots text-base"></i>
+        <span class="font-semibold tracking-tight">问爸爸</span>
+    </button>
+
+    <!-- Matrix 代码雨 Canvas（高级彩蛋） -->
+    <canvas id="matrix-canvas" class="hidden fixed inset-0 z-[200] pointer-events-none"></canvas>
 
     <script>
         // ==================== 主要功能脚本 ====================
@@ -731,9 +863,20 @@
                     document.getElementById('search-input').focus();
                 }
                 if (e.key === 'Escape') {
-                    const modal = document.getElementById('post-modal');
-                    if (!modal.classList.contains('hidden')) {
+                    // 优先关闭各种弹窗
+                    const dadModal = document.getElementById('dad-chat-modal');
+                    if (dadModal && !dadModal.classList.contains('hidden')) {
+                        closeDadChat();
+                        return;
+                    }
+                    const postModal = document.getElementById('post-modal');
+                    if (postModal && !postModal.classList.contains('hidden')) {
                         closeModal();
+                        return;
+                    }
+                    const qqModal = document.getElementById('qq-modal');
+                    if (qqModal && !qqModal.classList.contains('hidden')) {
+                        closeQQModal();
                     }
                 }
             });
@@ -742,9 +885,530 @@
             const searchInput = document.getElementById('search-input');
             searchInput.addEventListener('focus', function() {
                 if (!searchInput.placeholder.includes('按 /')) {
-                    searchInput.placeholder = '搜索文章...（按 / 快速聚焦）';
+                    searchInput.placeholder = '搜索文章... (按 / 快速聚焦)';
                 }
             });
+            
+            // 隐藏小彩蛋：搜索框输入「爹」或「爸爸」会直接召唤问爸爸
+            searchInput.addEventListener('input', function() {
+                const val = searchInput.value.trim();
+                if (val === '爹' || val === '爸爸' || val === '问爸爸') {
+                    searchInput.value = '';
+                    setTimeout(() => {
+                        const dadModal = document.getElementById('dad-chat-modal');
+                        if (dadModal && dadModal.classList.contains('hidden')) {
+                            openDadChat();
+                        }
+                    }, 80);
+                }
+            });
+        }
+        
+        // ==================== 毒舌爸爸彩蛋逻辑 ====================
+        
+        // 躺尸状态轮换（点击状态栏触发）
+        const dadStatuses = [
+            "目前在互联网躺尸",
+            "正在假死中…别碰",
+            "已开启植物人模式",
+            "拒绝一切社交请求",
+            "正在思考人生（其实在发呆）",
+            "已进入节能模式",
+            "躺尸进行时，请勿打扰"
+        ];
+        let currentStatusIndex = 0;
+
+        function cycleDadStatus() {
+            const el = document.getElementById('dad-status');
+            if (!el) return;
+            
+            currentStatusIndex = (currentStatusIndex + 1) % dadStatuses.length;
+            el.style.transition = 'opacity 0.15s';
+            el.style.opacity = '0';
+            
+            setTimeout(() => {
+                el.innerText = dadStatuses[currentStatusIndex];
+                el.style.opacity = '1';
+            }, 150);
+            
+            // 额外彩蛋：连续点几次会触发特殊吐槽
+            if (currentStatusIndex === 3) {
+                setTimeout(() => {
+                    if (el.innerText.includes('拒绝')) {
+                        el.innerText = "你再点我试试？";
+                    }
+                }, 1200);
+            }
+        }
+
+        function initDadStatus() {
+            // 初始状态已经在 HTML 里写死，这里可以做额外初始化
+            const el = document.getElementById('dad-status');
+            if (el) {
+                el.title = "点我换个躺尸姿势";
+            }
+        }
+
+        // 问爸爸 - 超级毒舌回复库
+        const dadReplies = [
+            "有事说事，没事滚。",
+            "你问这个干嘛？自己想。",
+            "我在躺尸，别来烦我。",
+            "这个问题问得像个傻子。",
+            "爸爸现在没空，过会儿再问（永远别问）。",
+            "你是不是又在浪费我的时间？",
+            "少御又来了是吧。",
+            "钱？没有。梦想？更没有。",
+            "你配吗？别做梦了。",
+            "躺着不香吗？非要起来作死。",
+            "我现在只想躺着，别说话。",
+            "你这问题我懒得回答，下一个。",
+            "自己去百度，别来问我。",
+            "又在表演什么？演技挺差。",
+            "别废话，我在假死。",
+            "你是不是脑子进水了？",
+            "这个问题我回答了你也不会懂。",
+            "我现在的心情是：不想理你。",
+            "滚去写你的作业/代码/文章吧。",
+            "爸爸的耐心已经用完了。",
+            "你再问一句我就真的不理了。",
+            "这个破问题关我什么事？",
+            "我现在是植物人状态，听不见。",
+            "你确定你不是来找骂的？"
+        ];
+
+        function getDadReply(question) {
+            const q = question.toLowerCase().trim();
+            
+            // 关键词触发（更毒）
+            if (q.includes('钱') || q.includes('打钱') || q.includes('工资') || q.includes('借')) {
+                return "钱是吧？自己去挣，别来问我。";
+            }
+            if (q.includes('女朋友') || q.includes('对象') || q.includes('老婆') || q.includes('女') || q.includes('结婚')) {
+                return "你配吗？先照照镜子再说。";
+            }
+            if (q.includes('你好') || q.includes('爹') || q.includes('爸爸') || q.includes('老爹')) {
+                return "有事说事，没事滚。";
+            }
+            if (q.includes('为什么') || q.includes('怎么') || q.includes('为啥')) {
+                return "为什么？因为你笨啊。";
+            }
+            if (q.includes('滚') || q.includes('烦') || q.includes('走') || q.includes('闭嘴')) {
+                return "你先滚，我躺着呢。";
+            }
+            if (q.includes('工作') || q.includes('努力') || q.includes('上班')) {
+                return "努力？躺着不香吗？";
+            }
+            if (q.includes('博客') || q.includes('网站') || q.includes('文章')) {
+                return "这个破站你还想让我维护？自己看着办。";
+            }
+            if (q.includes('爱') || q.includes('喜欢')) {
+                return "爱是啥？能吃吗？";
+            }
+            if (q.includes('累') || q.includes('倦') || q.includes('困')) {
+                return "你累？我比你累多了，别吵。";
+            }
+            
+            // 普通随机毒舌
+            return dadReplies[Math.floor(Math.random() * dadReplies.length)];
+        }
+
+        // 问爸爸弹窗控制
+        let dadChatInitialized = false;
+
+        function openDadChat() {
+            const modal = document.getElementById('dad-chat-modal');
+            const input = document.getElementById('dad-chat-input');
+            const area = document.getElementById('dad-chat-area');
+            
+            if (!modal) return;
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+            
+            // 第一次打开时显示爸爸的冷漠开场白
+            if (!dadChatInitialized && area) {
+                area.innerHTML = '';
+                appendMessage('dad', "有事说事，没事别废话。", area);
+                dadChatInitialized = true;
+            }
+            
+            // 自动聚焦输入框
+            setTimeout(() => {
+                if (input) input.focus();
+            }, 180);
+        }
+
+        function closeDadChat() {
+            const modal = document.getElementById('dad-chat-modal');
+            if (modal) {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        }
+
+        function appendMessage(type, text, container) {
+            const msg = document.createElement('div');
+            
+            if (type === 'user') {
+                msg.className = 'flex justify-end';
+                msg.innerHTML = `
+                    <div class="max-w-[78%] bg-emerald-600 text-white px-4 py-2.5 rounded-2xl rounded-tr-sm text-sm">
+                        ${text}
+                    </div>
+                `;
+            } else {
+                msg.className = 'flex justify-start';
+                msg.innerHTML = `
+                    <div class="max-w-[82%] flex gap-2">
+                        <div class="w-6 h-6 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <i class="fa-solid fa-user-tie text-xs"></i>
+                        </div>
+                        <div class="bg-slate-100 text-slate-700 px-4 py-2.5 rounded-2xl rounded-tl-sm text-sm">
+                            ${text}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            container.appendChild(msg);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function sendDadMessage() {
+            const input = document.getElementById('dad-chat-input');
+            const area = document.getElementById('dad-chat-area');
+            if (!input || !area || !input.value.trim()) return;
+            
+            const question = input.value.trim();
+            
+            // 显示用户消息
+            appendMessage('user', question, area);
+            
+            // 清空输入框
+            input.value = '';
+            
+            // 模拟爸爸思考 + 回复（带一点延迟，更真实）
+            setTimeout(() => {
+                const reply = getDadReply(question);
+                appendMessage('dad', reply, area);
+            }, 420);
+        }
+
+        // ==================== 高级程序员装逼彩蛋（技术痕迹区） ====================
+        
+        // --- Matrix 代码雨 ---
+        let matrixAnimation = null;
+        
+        function startMatrixRain() {
+            const canvas = document.getElementById('matrix-canvas');
+            if (!canvas) return;
+            
+            canvas.classList.remove('hidden');
+            canvas.classList.add('block');
+            
+            const ctx = canvas.getContext('2d', { alpha: true });
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+            const fontSize = 14;
+            const columns = Math.floor(canvas.width / fontSize);
+            const drops = Array(columns).fill(1);
+            
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = '#10b981';
+                ctx.font = fontSize + 'px monospace';
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars[Math.floor(Math.random() * chars.length)];
+                    const x = i * fontSize;
+                    const y = drops[i] * fontSize;
+                    
+                    ctx.fillText(text, x, y);
+                    
+                    if (y > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+            
+            if (matrixAnimation) clearInterval(matrixAnimation);
+            matrixAnimation = setInterval(draw, 38);
+            
+            // 12秒后自动消失
+            setTimeout(() => {
+                stopMatrixRain();
+            }, 12000);
+        }
+        
+        function stopMatrixRain() {
+            const canvas = document.getElementById('matrix-canvas');
+            if (matrixAnimation) {
+                clearInterval(matrixAnimation);
+                matrixAnimation = null;
+            }
+            if (canvas) {
+                canvas.classList.add('hidden');
+                canvas.classList.remove('block');
+            }
+        }
+        
+        // --- Konami Code（上上下下左右左右BA） ---
+        let konamiBuffer = [];
+        const KONAMI_CODE = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+        
+        function initKonamiCode() {
+            document.addEventListener('keydown', function(e) {
+                konamiBuffer.push(e.key);
+                if (konamiBuffer.length > KONAMI_CODE.length) {
+                    konamiBuffer.shift();
+                }
+                if (konamiBuffer.join(',') === KONAMI_CODE.join(',')) {
+                    konamiBuffer = [];
+                    startMatrixRain();
+                    // 额外毒舌提示
+                    setTimeout(() => {
+                        const toast = document.createElement('div');
+                        toast.className = 'fixed bottom-20 left-1/2 -translate-x-1/2 z-[210] bg-black/80 text-emerald-400 text-xs px-4 py-2 rounded-2xl font-mono';
+                        toast.textContent = '又在玩这些没用的东西？';
+                        document.body.appendChild(toast);
+                        setTimeout(() => toast.remove(), 1800);
+                    }, 600);
+                }
+            });
+        }
+        
+        // --- 爸爸的终端 ---
+        const terminalHistory = [];
+        let historyIndex = -1;
+        
+        function initTerminal() {
+            const input = document.getElementById('terminal-input');
+            const output = document.getElementById('terminal-output');
+            if (!input || !output) return;
+            
+            // 开场白
+            output.innerHTML = `
+                <div class="text-emerald-600/70">欢迎来到爸爸的终端。输入 help 看看你能干什么。</div>
+                <div class="text-emerald-600/70 text-[12px]（大部分命令都没用，跟我一样）</div>
+            `;
+            
+            // 自动聚焦（点击终端区域）
+            const body = document.getElementById('terminal-body');
+            if (body) {
+                body.addEventListener('click', () => input.focus());
+            }
+            
+            // 初始聚焦
+            setTimeout(() => input.focus(), 600);
+        }
+        
+        function handleTerminalInput(e) {
+            const input = document.getElementById('terminal-input');
+            const output = document.getElementById('terminal-output');
+            if (!input || !output) return;
+            
+            if (e.key === 'Enter') {
+                const cmd = input.value.trim();
+                if (!cmd) return;
+                
+                // 打印输入的命令
+                const line = document.createElement('div');
+                line.className = 'flex gap-2';
+                line.innerHTML = `<span class="text-emerald-500 select-none">$</span><span class="text-emerald-300">${cmd}</span>`;
+                output.appendChild(line);
+                
+                // 执行命令
+                executeTerminalCommand(cmd, output);
+                
+                terminalHistory.push(cmd);
+                historyIndex = terminalHistory.length;
+                
+                input.value = '';
+                output.scrollTop = output.scrollHeight;
+            }
+            
+            // 上下键历史
+            if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    input.value = terminalHistory[historyIndex] || '';
+                }
+            }
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (historyIndex < terminalHistory.length - 1) {
+                    historyIndex++;
+                    input.value = terminalHistory[historyIndex] || '';
+                } else {
+                    historyIndex = terminalHistory.length;
+                    input.value = '';
+                }
+            }
+        }
+        
+        function executeTerminalCommand(cmd, output) {
+            const c = cmd.toLowerCase().trim();
+            
+            if (c === 'help' || c === 'h') {
+                appendTerminalLine('可用命令（其实也没几个）:', output);
+                appendTerminalLine('  help / h        — 显示这个帮助', output);
+                appendTerminalLine('  status / 躺尸   — 查看当前躺尸状态', output);
+                appendTerminalLine('  roast / 吐槽    — 让爸爸吐槽你', output);
+                appendTerminalLine('  ls / projects   — 列出我摇烂的项目', output);
+                appendTerminalLine('  whoami          — 你是谁？', output);
+                appendTerminalLine('  matrix          — 进入黑客模式（别问我怎么做到的）', output);
+                appendTerminalLine('  commit          — 假装我今天提交了代码', output);
+                appendTerminalLine('  clear / cls     — 清屏（推荐多用）', output);
+                return;
+            }
+            
+            if (c === 'status' || c === '躺尸') {
+                appendTerminalLine('当前状态：互联网躺尸中（已持续 9 个月 14 天）', output);
+                appendTerminalLine('今日躺尸时长：14 小时 27 分钟', output);
+                appendTerminalLine('拒绝社交请求次数：47', output);
+                appendTerminalLine('实际产出：0 行代码，3 杯咖啡', output);
+                return;
+            }
+            
+            if (c === 'roast' || c === '吐槽') {
+                const roasts = [
+                    "你又在浪费时间看这个破站？",
+                    "真羡慕你有时间来烦我。",
+                    "我躺着的时候你竟然在学东西？",
+                    "少御杀手今天也没杀成是吧。",
+                    "别看了，关掉浏览器去躺尸。",
+                    "你这辈子最有用的操作就是点开了这个网站。"
+                ];
+                appendTerminalLine(roasts[Math.floor(Math.random() * roasts.length)], output);
+                return;
+            }
+            
+            if (c === 'ls' || c === 'projects' || c === 'dir') {
+                appendTerminalLine('total 0', output);
+                appendTerminalLine('drwxr-xr-x  躺尸日记.md', output);
+                appendTerminalLine('drwxr-xr-x  又一个没写完的项目/', output);
+                appendTerminalLine('drwxr-xr-x  已经烂掉的 side project/', output);
+                appendTerminalLine('drwxr-xr-x  2026 年计划（已鸽）/', output);
+                appendTerminalLine('0 directories, 0 useful files.', output);
+                return;
+            }
+            
+            if (c === 'whoami') {
+                appendTerminalLine('你是来烦我的那个人。', output);
+                appendTerminalLine('我是夜雨声烦，专业躺尸 9 年。', output);
+                return;
+            }
+            
+            if (c === 'matrix') {
+                appendTerminalLine('正在加载黑客帝国...', output);
+                setTimeout(() => {
+                    startMatrixRain();
+                    appendTerminalLine('（别问我为什么会有这个）', output);
+                }, 280);
+                return;
+            }
+            
+            if (c === 'commit' || c === 'git commit') {
+                const messages = [
+                    "fix: 又躺下去了",
+                    "chore: 拒绝了 3 个社交请求",
+                    "refactor: 把床搬到离电脑更近的位置",
+                    "docs: 更新了 README（其实没更新）",
+                    "feat: 新增了「什么都不做」功能",
+                    "style: 把窗帘拉得更黑了"
+                ];
+                appendTerminalLine('[' + new Date().toISOString().slice(0,10) + '] ' + messages[Math.floor(Math.random()*messages.length)], output);
+                appendTerminalLine('1 file changed, 0 insertions(+), 0 deletions(-)', output);
+                return;
+            }
+            
+            if (c === 'clear' || c === 'cls') {
+                output.innerHTML = '';
+                return;
+            }
+            
+            // 默认回复
+            appendTerminalLine('command not found: ' + cmd + ' （我懒得实现这个命令）', output);
+            appendTerminalLine('输入 help 看看你还能干什么。', output);
+        }
+        
+        function appendTerminalLine(text, output) {
+            const div = document.createElement('div');
+            div.className = 'text-emerald-300/90 whitespace-pre-wrap';
+            div.textContent = text;
+            output.appendChild(div);
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        // --- 躺尸热力图（SVG） ---
+        function generateHeatmap() {
+            const container = document.getElementById('heatmap-container');
+            if (!container) return;
+            
+            const weeks = 52;
+            const days = 7;
+            const cell = 11;
+            const gap = 3;
+            const width = weeks * (cell + gap) + 20;
+            const height = days * (cell + gap) + 30;
+            
+            let svg = `<svg width="${width}" height="${height}" class="min-w-full">`;
+            
+            // 月份标签（简化）
+            svg += `<text x="20" y="10" font-size="9" fill="#64748b">Jan</text>`;
+            svg += `<text x="${20 + 13*4}" y="10" font-size="9" fill="#64748b">Apr</text>`;
+            svg += `<text x="${20 + 13*8}" y="10" font-size="9" fill="#64748b">Jul</text>`;
+            svg += `<text x="${20 + 13*11}" y="10" font-size="9" fill="#64748b">Oct</text>`;
+            
+            const sarcasticMessages = [
+                "fix: 又躺下去了",
+                "chore: 拒绝社交 3 小时",
+                "refactor: 继续摇烂",
+                "docs: 写了半行注释就睡觉了",
+                "feat: 新增了「什么都不干」功能",
+                "style: 把窗帘拉得更黑",
+                "test: 验证了床的舒适度",
+                "perf: 优化了躺尸姿势"
+            ];
+            
+            for (let w = 0; w < weeks; w++) {
+                for (let d = 0; d < days; d++) {
+                    const x = 20 + w * (cell + gap);
+                    const y = 16 + d * (cell + gap);
+                    
+                    // 让热力图看起来「努力但其实很懒」
+                    let intensity = Math.random();
+                    if (w > 40) intensity = Math.random() * 0.4; // 年底更懒
+                    if (d === 0 || d === 6) intensity *= 1.6;    // 周末偶尔活跃
+                    
+                    let color = '#f1f5f9';
+                    if (intensity > 0.82) color = '#10b981';
+                    else if (intensity > 0.65) color = '#34d399';
+                    else if (intensity > 0.42) color = '#a7f3d0';
+                    
+                    const msg = sarcasticMessages[Math.floor(Math.random() * sarcasticMessages.length)];
+                    const title = `${msg} (${Math.floor(Math.random()*3)+1} contributions)`;
+                    
+                    svg += `<rect x="${x}" y="${y}" width="${cell}" height="${cell}" rx="2" ry="2" fill="${color}">
+                        <title>${title}</title>
+                    </rect>`;
+                }
+            }
+            
+            svg += `</svg>`;
+            container.innerHTML = svg;
         }
         
         // 初始化一切
@@ -752,6 +1416,12 @@
             initPersonalInfo();
             renderPosts(posts);
             initKeyboardShortcuts();
+            initDadStatus();
+            
+            // 高级彩蛋初始化
+            initTerminal();
+            generateHeatmap();
+            initKonamiCode();
             
             // 让搜索框支持中文输入
             console.log('%c[个人博客] 网站初始化完成 - 欢迎使用！', 'color:#64748b');
@@ -761,4 +1431,85 @@
         document.addEventListener('DOMContentLoaded', initBlog);
     </script>
 </body>
-</html>
+</html>"},{"path":"README.md","content":"# 我的个人博客
+
+这是我自己的个人博客网站！  
+完全不需要编程知识，打开就能用。
+
+---
+
+## 怎么打开这个博客？
+
+**最简单的方法**（推荐）：
+1. 进入这个文件夹（`个人博客`）
+2. 双击 `index.html` 文件
+3. 它会自动在浏览器里打开
+
+就是这么简单！
+
+---
+
+## 我想改成自己的内容，怎么办？
+
+超级简单！只需要改一个文件里的几个地方。
+
+### 第一步：打开文件
+用**记事本**或**VS Code**打开 `index.html`
+
+### 第二步：找到配置区域（最上面）
+文件最上面有一大段用 `//` 开头的文字，里面有个 `blogConfig` 部分：
+
+```js
+const blogConfig = {
+    name: "夜雨声烦",                    // ← 把这里改成你的名字
+    title: "少御杀手",     // ← 改成你的身份（比如“学生”“程序员”“自由职业者”）
+    shortBio: "如果你是少御，那我们可以聊聊。", // ← 改成你的一句话介绍
+    avatar: "./avatar.jpg", // ← 改成你的照片地址
+    ...
+}
+```
+
+把这些改成你自己的就行。
+
+### 第三步：修改文章
+再往下一点，有一个叫 `posts` 的地方，里面有 5 篇文章示例。
+
+你可以：
+- 修改现有文章的标题、日期、内容
+- 删除你不想要的文章
+- 自己添加新文章（复制一个就行）
+
+---
+
+## 想放自己的照片怎么办？
+
+最简单的方法：
+1. 把你的照片复制到这个文件夹里（比如叫 `avatar.jpg`）
+2. 在 `index.html` 里找到 `avatar:` 那一行
+3. 把内容改成：`"./avatar.jpg"`
+
+保存后刷新浏览器就能看到啦！
+
+---
+
+## 新增的高级功能（看起来像程序员）
+
+- **爸爸的终端** — 真正的命令行界面，输入 help / matrix / roast / status 等命令，全部是毒舌回答
+- **躺尸热力图** — GitHub 风格的 SVG 贡献图，悬停显示“又躺下去了”等趣味 commit
+- **Matrix 代码雨** — 输入 `matrix` 或按上上下下左右左右BA 触发美丽的绿色代码雨
+- **问爸爸** — 右下角悬浮按钮，超毒舌聊天机
+
+---
+
+## 想把博客放到网上让别人看？
+
+目前这个版本是**本地使用**的（只在你电脑上）。
+
+已经部署到 GitHub Pages （https://yeyeyeyeyeovo.github.io/MaybeOvO/），双击 index.html 就是本地预览。
+
+---
+
+**最后**：这个博客是我（其实是 Grok 帮我）做的，祝你用得开心！
+
+慢慢记录生活，慢慢分享想法。
+"
