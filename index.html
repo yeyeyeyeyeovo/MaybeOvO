@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小夜 个人博客</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&amp;family=Noto+Serif+SC:wght@400;500&amp;display=swap');
+        
+        :root {
+            --accent: #10b981;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+        }
+        
+        .serif {
+            font-family: 'Noto Serif SC', Georgia, serif;
+        }
+
+        .blog-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.05), 0 8px 10px -6px rgb(0 0 0 / 0.05);
+        }
+
+        .nav-link {
+            transition: all 0.2s ease;
+        }
+        
+        .nav-link:hover {
+            color: #10b981;
+        }
+
+        .post-content {
+            font-size: 17px;
+            line-height: 1.85;
+        }
+        
+        .post-content h2 {
+            font-size: 1.35rem;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .post-content p {
+            margin-bottom: 1.25rem;
+        }
+
+        .modal {
+            animation: modalPop 0.2s ease-out forwards;
+        }
+
+        @keyframes modalPop {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .section-title {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background-color: #10b981;
+            border-radius: 9999px;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            padding: 2px 10px;
+            border-radius: 9999px;
+            background-color: #f1f5f9;
+            color: #475569;
+        }
+
+        .hero-bg {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1e7ff10 100%);
+        }
+
+        .nav-active {
+            color: #10b981;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+    <!-- ==================== 配置区域（小白最重要！） ==================== -->
+    <script>
+        // ==================== 请在这里修改你的个人信息 ====================
+        const blogConfig = {
+            name: "夜雨声烦",                          // ← 改成你的名字
+            title: "少御杀手",           // ← 改成你的身份
+            shortBio: "如果你是少御，那我们可以聊聊。", // ← 改成一句话介绍
+            avatar: "./avatar.jpg",   // ← 已修复为安全文件名（避免中文文件名在本地打开时不显示）
+            
+            about: `你好，我是你爹.<br><br>
+                    没事请不要烦我 喜欢清净.`,
+            
+            // 联系方式（请修改）
+            email: "dupes.snub9b@icloud.com",
+            wechat: "780355",
+            qq: "780355",  // ← 新增 QQ 联系方式
+            github: "https://github.com/yeyeyeyeyeovo"  // ← 已更新为你的 GitHub ID
+        };
+
+        // ==================== 博客文章配置（在这里添加/修改文章） ====================
+        const posts = [
+            {
+                id: 1,
+                title: "深夜咖啡馆",
+                date: "2025-02-08",
+                category: "生活",
+                readTime: "8分钟",
+                excerpt: "雨夜里，我又一次推开那家熟悉的咖啡馆。暖黄的灯光、磨砂的木桌、老旧的唱片机……",
+                content: `
+                    <p>雨夜里，我又一次推开那家熟悉的咖啡馆。</p>
+                    <p>暖黄的灯光、磨砂的木桌、老旧的唱片机，这些元素几乎没有变过。唯一变化的，是坐在角落写东西的我。</p>
+                    
+                    <h2>为什么喜欢深夜</h2>
+                    <p>白天太吵，深夜却安静得像另一个世界。思维好像会变得更清晰，情感也更容易被触动。</p>
+                    <p>我常常在这里写完一篇文章，或者只是发呆。店员已经认识我了，会默认给我加一份桂花拿铁。</p>
+                    
+                    <h2>小确幸</h2>
+                    <p>真正让人快乐的，从来不是什么大事，而是一些很小的瞬间：</p>
+                    <ul style="margin-left:1.25rem; margin-bottom:1.25rem;">
+                        <li>雨点敲在玻璃上的声音</li>
+                        <li>咖啡第一口苦、第二口甜</li>
+                        <li>手机突然没电，于是真正把注意力放在眼前</li>
+                    </ul>
+                    
+                    <p>希望你也有属于自己的「深夜咖啡馆」。</p>
+                `
+            },
+            {
+                id: 2,
+                title: "我为什么开始写博客",
+                date: "2025-01-25",
+                category: "思考",
+                readTime: "6分钟",
+                excerpt: "很多人问我，为什么还要写博客？这个时代，写东西真的有意义吗？",
+                content: `
+                    <p>很多人问我，为什么还要写博客？</p>
+                    <p>这个时代，短视频、直播、AI 写作已经很发达了，普通人写东西真的有价值吗？</p>
+                    
+                    <h2>写给未来的自己</h2>
+                    <p>我写博客最主要的原因，是写给 5 年、10 年后的自己看的。</p>
+                    <p>当我忘记曾经的困惑、曾经的快乐、曾经的幼稚时，这些文字会提醒我：我曾经这样走过。</p>
+                    
+                    <h2>连接真实的陌生人</h2>
+                    <p>写博客让我认识了很多有趣的人。他们可能来自不同的城市、不同的行业，但因为一篇文章产生了共鸣。</p>
+                    <p>这种连接，比任何社交媒体都更深、更久。</p>
+                    
+                    <p>所以我还是会继续写下去，哪怕一年只写十几篇。</p>
+                `
+            },
+            {
+                id: 3,
+                title: "读完《原子习惯》后的真实改变",
+                date: "2025-01-12",
+                category: "读书",
+                readTime: "10分钟",
+                excerpt: "这本书我读了三遍，它真正改变了我的，不是「每天进步1%」这句话，而是更底层的东西。",
+                content: `
+                    <p>《原子习惯》我读了三遍。它真正改变我的，不是那句著名的「每天进步1%」。</p>
+                    
+                    <h2>我真正学会的事</h2>
+                    <p>这本书让我意识到：改变行为最难的地方从来不是「坚持」，而是「设计环境」。</p>
+                    <p>比如我想每天写 500 字，我没有去逼自己，而是把电脑直接开着，放在书桌上最显眼的位置。</p>
+                    
+                    <h2>两个让我受益最大的方法</h2>
+                    <p>1. <strong>把坏习惯变得不可见</strong> —— 我把手机放进抽屉，并把充电线收起来。</p>
+                    <p>2. <strong>把好习惯变得显而易见</strong> —— 跑鞋永远放在门口，运动服叠在最上面。</p>
+                    
+                    <p>这些小改变累积起来，真的很恐怖。</p>
+                `
+            },
+            {
+                id: 4,
+                title: "在小城生活的第 300 天",
+                date: "2024-12-30",
+                category: "生活",
+                readTime: "7分钟",
+                excerpt: "从北上广辞职回来，在老家小城已经待了 300 天。很多人问我后悔吗？",
+                content: `
+                    <p>从北上广辞职回来，在老家小城已经待了整整 300 天。</p>
+                    
+                    <h2>最真实的变化</h2>
+                    <p>最大的变化不是收入减少，而是时间变多了。</p>
+                    <p>以前每天通勤 2 小时，现在走路 8 分钟就能到「公司」（其实就是家里的书房）。</p>
+                    <p>我开始有时间认真做饭、散步、和父母聊天、甚至发呆。</p>
+                    
+                    <h2>也遇到的困难</h2>
+                    <p>当然也有不适应的时候：信息闭塞、选择变少、朋友越来越少。</p>
+                    <p>但我慢慢学会了和自己相处，也学会了主动创造连接。</p>
+                    
+                    <p>小城生活没有对错，只有适不适合。</p>
+                `
+            },
+            {
+                id: 5,
+                title: "关于「慢」这件事",
+                date: "2024-12-15",
+                category: "思考",
+                readTime: "5分钟",
+                excerpt: "我们总在追求更快、更高效。但我发现，真正重要的东西，都需要「慢」。",
+                content: `
+                    <p>我们总在追求更快、更高效。</p>
+                    <p>但这几年我越来越发现：真正重要的东西，都需要「慢」。</p>
+                    
+                    <h2>慢下来的价值</h2>
+                    <ul style="margin-left:1.25rem; margin-bottom:1.25rem;">
+                        <li>慢吃饭 → 胃舒服，体重也稳了</li>
+                        <li>慢思考 → 不会做很多蠢决定</li>
+                        <li>慢交朋友 → 关系反而更持久</li>
+                        <li>慢写东西 → 偶尔能写出让自己都惊讶的句子</li>
+                    </ul>
+                    
+                    <p>「慢」不是偷懒，而是给生命留出空间。</p>
+                    <p>在这个越来越快的世界里，能慢下来的人，反而显得珍贵。</p>
+                `
+            }
+        ];
+    </script>
+    <!-- ==================== 配置区域结束 ==================== -->
+
+    <!-- 头像设置：使用配置中的路径，并添加加载失败回退 -->
+    <script>
+        function setHeroAvatar() {
+            const img = document.getElementById('hero-avatar');
+            if (!img || !blogConfig || !blogConfig.avatar) return;
+            
+            img.src = blogConfig.avatar;
+            
+            // 如果图片加载失败（常见于中文文件名或路径问题），显示名字首字母作为优雅回退
+            img.onerror = function() {
+                img.style.display = 'none';
+                const fallback = document.createElement('div');
+                fallback.className = 'w-full h-full flex items-center justify-center bg-emerald-100 text-emerald-700 text-6xl font-semibold rounded-3xl';
+                fallback.textContent = (blogConfig.name || '博').charAt(0);
+                img.parentNode.appendChild(fallback);
+            };
+        }
+        
+        // 尽早设置头像（DOMContentLoaded）
+        document.addEventListener('DOMContentLoaded', setHeroAvatar);
+    </script>
+
+    <!-- 导航栏 -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-x-3">
+                    <img id="nav-logo" 
+                         src="./avatar.jpg" 
+                         class="w-8 h-8 rounded-full object-cover ring-1 ring-slate-200 shadow-sm flex-shrink-0"
+                         alt="头像">
+                    <span class="font-semibold text-xl tracking-tight" id="nav-name">夜雨声烦</span>
+                </div>
+                
+                <div class="hidden md:flex items-center gap-x-8 text-sm">
+                    <a href="#about" class="nav-link text-slate-600 font-medium">关于我</a>
+                    <a href="#posts" class="nav-link text-slate-600 font-medium">全部文章</a>
+                    <a href="#contact" class="nav-link text-slate-600 font-medium">联系</a>
+                </div>
+                
+                <div class="flex items-center gap-x-3">
+                    <button onclick="showCustomizeTip()" 
+                            class="px-4 py-2 text-sm bg-white border border-slate-200 hover:bg-slate-50 rounded-2xl text-slate-600 flex items-center gap-x-2 transition-colors">
+                        <i class="fa-solid fa-edit text-xs"></i>
+                        <span class="hidden sm:inline">如何修改</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄区 / 个人介绍 -->
+    <div class="hero-bg border-b border-slate-100">
+        <div class="max-w-5xl mx-auto px-6 pt-16 pb-20">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <!-- 左侧文字 -->
+                <div class="flex-1 text-center md:text-left">
+                    <div class="inline-flex items-center gap-x-2 px-4 py-1.5 bg-white rounded-3xl shadow-sm border border-slate-100 mb-6">
+                        <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                        <span class="text-sm text-slate-600">目前在互联网躺尸</span>
+                    </div>
+                    
+                    <h1 class="text-6xl md:text-7xl font-semibold tracking-tighter mb-4" id="hero-name">
+                        我是夜雨声烦
+                    </h1>
+                    
+                    <p class="text-2xl text-slate-600 mb-8" id="hero-title">少御杀手</p>
+                    
+                    <p class="max-w-md text-lg text-slate-600 mb-10 mx-auto md:mx-0" id="hero-bio">
+                        如果你是少御，那我们可以聊聊。
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                        <a href="#posts" 
+                           class="px-8 py-3.5 bg-emerald-600 hover:bg-emerald-700 transition-all text-white rounded-3xl font-medium flex items-center justify-center gap-x-2 shadow-lg shadow-emerald-600/20">
+                            <span>阅读我的文章</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                        <a href="#about" 
+                           class="px-8 py-3.5 bg-white hover:bg-slate-50 transition-all border border-slate-200 text-slate-700 rounded-3xl font-medium flex items-center justify-center gap-x-2">
+                            了解我
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 右侧头像 -->
+                <div class="flex-shrink-0">
+                    <div class="relative">
+                        <div class="w-64 h-64 md:w-72 md:h-72 rounded-3xl overflow-hidden shadow-2xl border-8 border-white ring-1 ring-slate-100">
+                            <img id="hero-avatar" 
+                                 src="" 
+                                 class="w-full h-full object-cover"
+                                 alt="头像"
+                                 loading="eager">
+                        </div>
+                        <div class="absolute -bottom-3 -right-3 bg-white px-4 py-1.5 rounded-3xl shadow border text-sm flex items-center gap-x-2">
+                            <i class="fa-solid fa-heart text-red-500"></i>
+                            <span class="font-medium text-slate-600">又来看爸爸了？</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 关于我 -->
+    <div id="about" class="max-w-5xl mx-auto px-6 py-20 scroll-mt-16">
+        <div class="max-w-2xl mx-auto text-center mb-12">
+            <h2 class="text-4xl font-semibold tracking-tight mb-4 section-title">关于我</h2>
+            <p class="text-slate-600">简单介绍一下自己</p>
+        </div>
+        
+        <div class="max-w-3xl mx-auto">
+            <div class="bg-white border border-slate-100 shadow-sm rounded-3xl p-10 md:p-14 text-lg leading-relaxed text-slate-700" id="about-content">
+                <!-- 内容由 JS 填充 -->
+            </div>
+
+            <!-- QQ 主页截图展示 -->
+            <div class="mt-8">
+                <div onclick="showQQModal()" 
+                     class="group bg-white border border-slate-100 shadow-sm hover:shadow-md transition-all rounded-3xl p-6 cursor-pointer">
+                    <div class="flex items-center gap-x-3 mb-4">
+                        <i class="fa-brands fa-qq text-emerald-600 text-xl"></i>
+                        <span class="font-semibold text-lg tracking-tight">My QiCQ</span>
+                        <span class="text-xs px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full">点击查看大图</span>
+                    </div>
+                    
+                    <div class="relative overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+                        <img src="./qq-home.png" 
+                             alt="My QiCQ" 
+                             class="w-full object-cover transition-transform group-hover:scale-[1.015]">
+                        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/5"></div>
+                    </div>
+                    
+                    <div class="text-center mt-3 text-xs text-slate-500">点击可放大查看完整截图</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 文章列表 -->
+    <div id="posts" class="bg-white border-t border-b border-slate-100 scroll-mt-16">
+        <div class="max-w-5xl mx-auto px-6 py-20">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-10 gap-y-4">
+                <div>
+                    <h2 class="text-4xl font-semibold tracking-tight section-title mb-2">全部文章</h2>
+                    <p class="text-slate-600">记录生活里的小想法</p>
+                </div>
+                
+                <!-- 搜索框 -->
+                <div class="relative w-full md:w-80">
+                    <input type="text" 
+                           id="search-input"
+                           onkeyup="filterPosts()"
+                           placeholder="搜索文章标题或内容..." 
+                           class="w-full bg-slate-50 border border-slate-200 focus:border-emerald-300 transition-colors pl-11 py-3 rounded-3xl text-sm outline-none">
+                    <i class="fa-solid fa-search absolute left-4 top-4 text-slate-400"></i>
+                </div>
+            </div>
+            
+            <!-- 文章卡片容器 -->
+            <div id="posts-grid" 
+                 class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 由 JavaScript 动态渲染 -->
+            </div>
+            
+            <div id="no-results" class="hidden text-center py-12">
+                <i class="fa-regular fa-folder-open text-5xl text-slate-300 mb-4"></i>
+                <p class="text-slate-500">没有找到匹配的文章</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 联系方式 -->
+    <div id="contact" class="max-w-5xl mx-auto px-6 py-20 scroll-mt-16">
+        <div class="max-w-2xl mx-auto text-center">
+            <h2 class="text-4xl font-semibold tracking-tight mb-4 section-title">联系我</h2>
+            <p class="text-slate-600 mb-10">很不高兴认识你</p>
+            
+            <div class="flex flex-wrap justify-center gap-4 text-sm">
+                <a href="#" id="contact-email" 
+                   class="flex items-center gap-x-3 px-6 py-4 bg-white border border-slate-200 hover:border-slate-300 rounded-3xl transition-colors">
+                    <i class="fa-solid fa-envelope text-xl text-emerald-600 w-5"></i>
+                    <div class="text-left">
+                        <div class="text-xs text-slate-500">邮箱</div>
+                        <div class="font-medium">dupes.snub9b@icloud.com</div>
+                    </div>
+                </a>
+                
+                <a href="#" id="contact-wechat"
+                   class="flex items-center gap-x-3 px-6 py-4 bg-white border border-slate-200 hover:border-slate-300 rounded-3xl transition-colors">
+                    <i class="fa-brands fa-weixin text-xl text-emerald-600 w-5"></i>
+                    <div class="text-left">
+                        <div class="text-xs text-slate-500">微信</div>
+                        <div class="font-medium">780355</div>
+                    </div>
+                </a>
+                
+                <!-- QQ -->
+                <a href="#" id="contact-qq"
+                   class="flex items-center gap-x-3 px-6 py-4 bg-white border border-slate-200 hover:border-slate-300 rounded-3xl transition-colors">
+                    <i class="fa-brands fa-qq text-emerald-600 text-xl w-5"></i>
+                    <div class="text-left">
+                        <div class="text-xs text-slate-500">QQ</div>
+                        <div class="font-medium">780355</div>
+                    </div>
+                </a>
+                
+                <a href="#" id="contact-github" target="_blank"
+                   class="flex items-center gap-x-3 px-6 py-4 bg-white border border-slate-200 hover:border-slate-300 rounded-3xl transition-colors">
+                    <i class="fa-brands fa-github text-xl text-emerald-600 w-5"></i>
+                    <div class="text-left">
+                        <div class="text-xs text-slate-500">GitHub</div>
+                        <div class="font-medium">yeyeyeyeyeovo</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="border-t border-slate-100 py-8 bg-white">
+        <div class="max-w-5xl mx-auto px-6 text-center text-sm text-slate-500">
+            <p>© 2026 小夜</p>
+            <p class="mt-1 text-xs">Powered By Grok Build</p>
+        </div>
+    </footer>
+
+    <!-- 阅读文章的弹窗 Modal -->
+    <div id="post-modal" onclick="if (event.target.id === 'post-modal') closeModal()" 
+         class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+        <div onclick="event.stopImmediatePropagation()" 
+             class="modal bg-white w-full max-w-3xl max-h-[92vh] rounded-3xl overflow-hidden shadow-2xl flex flex-col">
+            
+            <!-- Modal Header -->
+            <div class="px-8 pt-8 pb-4 border-b flex items-start justify-between">
+                <div class="flex-1 pr-6">
+                    <div class="flex items-center gap-x-3 mb-3">
+                        <span id="modal-category" 
+                              class="px-3 py-1 text-xs font-medium bg-emerald-100 text-emerald-700 rounded-2xl"></span>
+                        <span id="modal-date" class="text-sm text-slate-500"></span>
+                        <span id="modal-readtime" class="text-sm text-slate-400"></span>
+                    </div>
+                    <h2 id="modal-title" class="text-3xl font-semibold tracking-tight leading-tight"></h2>
+                </div>
+                <button onclick="closeModal()" 
+                        class="text-slate-400 hover:text-slate-700 p-2 -mr-2 -mt-2 transition-colors">
+                    <i class="fa-solid fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <!-- Modal Content -->
+            <div class="p-8 overflow-auto flex-1 post-content text-slate-700" id="modal-content">
+                <!-- 文章正文由 JS 填充 -->
+            </div>
+            
+            <div class="px-8 py-5 border-t bg-slate-50 flex justify-end">
+                <button onclick="closeModal()" 
+                        class="px-5 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- QQ 主页大图弹窗 -->
+    <div id="qq-modal" onclick="if (event.target.id === 'qq-modal') closeQQModal()" 
+         class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[110] flex items-center justify-center p-4">
+        <div onclick="event.stopImmediatePropagation()" class="relative max-w-[95vw] max-h-[92vh]">
+            <button onclick="closeQQModal()" 
+                    class="absolute -top-3 -right-3 bg-white text-slate-700 hover:text-red-600 w-9 h-9 rounded-full flex items-center justify-center shadow-lg text-xl transition-colors">
+                <i class="fa-solid fa-times"></i>
+            </button>
+            <img src="./qq-home.png" alt="My QiCQ" 
+                 class="max-w-[95vw] max-h-[88vh] rounded-3xl shadow-2xl object-contain bg-white">
+        </div>
+    </div>
+
+    <script>
+        // ==================== 主要功能脚本 ====================
+        
+        // 填充个人信息（从配置读取）
+        function initPersonalInfo() {
+            // 导航
+            document.getElementById('nav-name').innerText = blogConfig.name;
+            
+            // 顶部导航头像（小圆形，放在名字旁边）
+            const navLogo = document.getElementById('nav-logo');
+            if (navLogo) {
+                navLogo.src = blogConfig.avatar;
+                navLogo.onerror = function() {
+                    // 失败时优雅回退为小绿圆 + 首字母
+                    navLogo.style.display = 'none';
+                    const fb = document.createElement('div');
+                    fb.className = 'w-8 h-8 bg-emerald-600 rounded-2xl flex items-center justify-center text-white text-sm font-semibold flex-shrink-0';
+                    fb.textContent = (blogConfig.name || '夜').charAt(0);
+                    navLogo.parentNode.insertBefore(fb, navLogo);
+                };
+            }
+            
+            // Hero
+            document.getElementById('hero-name').innerText = `我是${blogConfig.name}`;
+            document.getElementById('hero-title').innerText = blogConfig.title;
+            document.getElementById('hero-bio').innerText = blogConfig.shortBio;
+            
+            // 使用统一的健壮头像设置函数（带失败回退）
+            setHeroAvatar();
+            
+            // 关于我
+            document.getElementById('about-content').innerHTML = blogConfig.about;
+            
+            // 联系方式
+            const emailEl = document.getElementById('contact-email');
+            emailEl.href = `mailto:${blogConfig.email}`;
+            emailEl.querySelector('div:last-child').innerHTML = `<div class="font-medium">${blogConfig.email}</div>`;
+            
+            const wechatEl = document.getElementById('contact-wechat');
+            wechatEl.querySelector('div:last-child').innerHTML = `<div class="font-medium">${blogConfig.wechat}</div>`;
+            
+            const qqEl = document.getElementById('contact-qq');
+            qqEl.href = `tencent://message/?uin=${blogConfig.qq}`;
+            qqEl.querySelector('div:last-child').innerHTML = `<div class="font-medium">${blogConfig.qq}</div>`;
+            
+            const githubEl = document.getElementById('contact-github');
+            githubEl.href = blogConfig.github;
+            // 安全提取 GitHub 显示名（兼容完整 URL 或纯用户名）
+            const githubDisplay = (blogConfig.github || '').replace(/^https?:\/\/(www\.)?github\.com\//i, '').replace(/\/$/, '') || blogConfig.github;
+            githubEl.querySelector('div:last-child').innerHTML = `<div class="font-medium">${githubDisplay}</div>`;
+        }
+        
+        // 渲染文章卡片
+        function renderPosts(filteredPosts = null) {
+            const container = document.getElementById('posts-grid');
+            const noResults = document.getElementById('no-results');
+            container.innerHTML = '';
+            
+            const toRender = filteredPosts || posts;
+            
+            if (toRender.length === 0) {
+                noResults.classList.remove('hidden');
+                return;
+            } else {
+                noResults.classList.add('hidden');
+            }
+            
+            toRender.forEach(post => {
+                const cardHTML = `
+                    <div onclick="openPost(${post.id})" 
+                         class="blog-card bg-white border border-slate-100 hover:border-slate-200 rounded-3xl p-7 cursor-pointer group">
+                        
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="tag">${post.category}</span>
+                            <span class="text-xs text-slate-400">${post.date}</span>
+                        </div>
+                        
+                        <h3 class="font-semibold text-xl tracking-tight mb-3 group-hover:text-emerald-600 transition-colors">
+                            ${post.title}
+                        </h3>
+                        
+                        <p class="text-slate-600 line-clamp-3 text-[15px] leading-relaxed mb-5">
+                            ${post.excerpt}
+                        </p>
+                        
+                        <div class="flex items-center justify-between text-sm">
+                            <div class="flex items-center gap-x-1.5 text-emerald-600">
+                                <span class="font-medium">阅读全文</span>
+                                <i class="fa-solid fa-arrow-right text-xs transition-transform group-hover:translate-x-0.5"></i>
+                            </div>
+                            <span class="text-xs text-slate-400">${post.readTime}</span>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHTML;
+            });
+        }
+        
+        // 搜索过滤
+        function filterPosts() {
+            const keyword = document.getElementById('search-input').value.toLowerCase().trim();
+            
+            if (!keyword) {
+                renderPosts(posts);
+                return;
+            }
+            
+            const filtered = posts.filter(post => 
+                post.title.toLowerCase().includes(keyword) || 
+                post.excerpt.toLowerCase().includes(keyword) ||
+                post.content.toLowerCase().includes(keyword)
+            );
+            
+            renderPosts(filtered);
+        }
+        
+        // 打开文章弹窗
+        function openPost(postId) {
+            const post = posts.find(p => p.id === postId);
+            if (!post) return;
+            
+            // 填充内容
+            document.getElementById('modal-title').innerText = post.title;
+            document.getElementById('modal-category').innerText = post.category;
+            document.getElementById('modal-date').innerText = post.date;
+            document.getElementById('modal-readtime').innerText = post.readTime;
+            document.getElementById('modal-content').innerHTML = post.content;
+            
+            // 显示弹窗
+            document.getElementById('post-modal').classList.remove('hidden');
+            document.getElementById('post-modal').classList.add('flex');
+            
+            // 禁止背景滚动
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('post-modal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // QQ 主页截图弹窗控制
+        function showQQModal() {
+            const modal = document.getElementById('qq-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeQQModal() {
+            const modal = document.getElementById('qq-modal');
+            if (modal) {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        }
+        
+        // 提示如何修改
+        function showCustomizeTip() {
+            const tipHTML = `
+                <div class="fixed inset-0 bg-black/60 backdrop-blur z-[200] flex items-center justify-center p-5" onclick="this.remove()">
+                    <div onclick="event.stopImmediatePropagation()" class="max-w-lg w-full bg-white rounded-3xl p-8">
+                        <h3 class="text-2xl font-semibold tracking-tight mb-5">如何把这个博客改成你的？</h3>
+                        
+                        <div class="space-y-5 text-sm text-slate-600">
+                            <div class="flex gap-4">
+                                <div class="font-mono text-emerald-600 font-bold w-5">1</div>
+                                <div>用记事本或 VS Code 打开 <span class="font-semibold text-slate-800">index.html</span></div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="font-mono text-emerald-600 font-bold w-5">2</div>
+                                <div>找到页面最上面的 <span class="font-semibold text-slate-800">blogConfig</span> 那一段，把名字、介绍、头像地址都改成你自己的</div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="font-mono text-emerald-600 font-bold w-5">3</div>
+                                <div>继续往下找到 <span class="font-semibold text-slate-800">posts</span>，可以删除、修改或新增文章</div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="font-mono text-emerald-600 font-bold w-5">4</div>
+                                <div>保存后双击 index.html 就能看到新效果了</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8 pt-6 border-t text-xs text-slate-500">
+                            提示：想换头像？把你的照片放到这个文件夹里，然后把 avatar 那一行改成 <span class="font-mono">"./我的照片.jpg"</span>
+                        </div>
+                        
+                        <button onclick="this.closest('.fixed').remove()" 
+                                class="mt-6 w-full py-3 bg-emerald-600 text-white rounded-2xl font-medium">
+                            我知道了
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', tipHTML);
+        }
+        
+        // 键盘支持
+        function initKeyboardShortcuts() {
+            document.addEventListener('keydown', function(e) {
+                if (e.key === '/' && document.activeElement.tagName === 'BODY') {
+                    e.preventDefault();
+                    document.getElementById('search-input').focus();
+                }
+                if (e.key === 'Escape') {
+                    const modal = document.getElementById('post-modal');
+                    if (!modal.classList.contains('hidden')) {
+                        closeModal();
+                    }
+                }
+            });
+            
+            // 提示用户可以按 / 搜索
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('focus', function() {
+                if (!searchInput.placeholder.includes('按 /')) {
+                    searchInput.placeholder = '搜索文章...（按 / 快速聚焦）';
+                }
+            });
+        }
+        
+        // 初始化一切
+        function initBlog() {
+            initPersonalInfo();
+            renderPosts(posts);
+            initKeyboardShortcuts();
+            
+            // 让搜索框支持中文输入
+            console.log('%c[个人博客] 网站初始化完成 - 欢迎使用！', 'color:#64748b');
+        }
+        
+        // 启动！使用 DOMContentLoaded 而不是 window.onload，让内容更早出现，减少旧内容闪现
+        document.addEventListener('DOMContentLoaded', initBlog);
+    </script>
+</body>
+</html>
