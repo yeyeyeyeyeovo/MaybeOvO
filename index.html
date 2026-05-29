@@ -1,0 +1,1787 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小夜 个人博客</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&amp;family=Noto+Serif+SC:wght@400;500&amp;display=swap');
+        
+        :root {
+            --accent: #c4b5fd;
+            --pink: #f9a8d4;
+            --mint: #a5f3fc;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+            color: #e0d4ff;
+            background-image: url('./gothic-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        /* 全页哥特背景暗色遮罩 - 让整个博客都有统一氛围 */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: rgba(20, 18, 32, 0.75);
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .serif {
+            font-family: 'Noto Serif SC', Georgia, serif;
+        }
+
+        /* ==================== 小夜二次元风格 ==================== */
+
+        /* 二次元梦幻卡片 */
+        .dark-card {
+            background: linear-gradient(145deg, #1f1b33 0%, #18152b 100%);
+            border: 1px solid #4c3f6b;
+            box-shadow: 0 15px 25px -5px rgb(0 0 0 / 0.3), 0 8px 10px -6px rgb(0 0 0 / 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dark-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 40%;
+            height: 40%;
+            background: radial-gradient(circle, rgba(196, 181, 253, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        
+        .dark-card:hover {
+            border-color: #c4b5fd;
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.3), 0 0 0 1px rgba(196, 181, 253, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .blog-card {
+            background: linear-gradient(145deg, #1f1b33 0%, #18152b 100%);
+            border: 1px solid #4c3f6b;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-10px) rotate(0.5deg);
+            border-color: #f9a8d4;
+            box-shadow: 0 30px 60px -15px rgb(0 0 0 / 0.35), 0 0 0 1px rgba(249, 168, 212, 0.2);
+        }
+
+        /* 导航 - 半透明哥特风格 */
+        nav {
+            background-color: rgba(20, 18, 32, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid #4c3f6b;
+        }
+
+        .nav-link {
+            transition: all 0.2s ease;
+            color: #c4b5fd;
+        }
+        
+        .nav-link:hover {
+            color: #f9a8d4;
+            transform: translateY(-1px);
+        }
+
+        /* Hero 区域 - 透明叠在全屏哥特背景上 */
+        .hero-bg {
+            position: relative;
+            overflow: hidden;
+            min-height: 620px;
+            background: none; /* 使用 body 的全屏背景 */
+        }
+        
+        /* Hero 区域额外轻微渐变（可选） */
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 40%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* 漂浮装饰元素 (二次元星光) */
+        .anime-float {
+            position: absolute;
+            color: #c4b5fd;
+            opacity: 0.15;
+            font-size: 14px;
+            animation: animeFloat 25s infinite ease-in-out;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        @keyframes animeFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-60px) rotate(15deg); }
+        }
+
+        /* Section 标题 - 二次元装饰 */
+        .section-title {
+            position: relative;
+            display: inline-block;
+            color: #e0d4ff;
+        }
+        
+        .section-title:after {
+            content: ' ✧';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 18px;
+            color: #f9a8d4;
+            opacity: 0.7;
+        }
+
+        /* 标签 - 软二次元 */
+        .tag {
+            font-size: 0.75rem;
+            padding: 3px 12px;
+            border-radius: 9999px;
+            background: linear-gradient(90deg, #4c3f6b, #3f3659);
+            color: #c4b5fd;
+            border: 1px solid #6b5b8a;
+        }
+
+        /* 文章内容 */
+        .post-content {
+            font-size: 17px;
+            line-height: 1.85;
+            color: #d1c4f0;
+        }
+        
+        .post-content h2 {
+            font-size: 1.35rem;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            color: #f3e8ff;
+        }
+        
+        .post-content p {
+            margin-bottom: 1.25rem;
+            color: #b8a9d8;
+        }
+
+        /* Modal - 梦幻二次元 */
+        .modal {
+            animation: modalPop 0.2s ease-out forwards;
+            background: linear-gradient(160deg, #25203a 0%, #1f1b33 100%);
+            border: 1px solid #6b5b8a;
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.4);
+        }
+
+        @keyframes modalPop {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* 联系卡片 */
+        .contact-card {
+            background: linear-gradient(145deg, #25203a 0%, #1f1b33 100%);
+            border: 1px solid #4c3f6b;
+            transition: all 0.2s ease;
+        }
+        
+        .contact-card:hover {
+            border-color: #f9a8d4;
+            box-shadow: 0 0 0 1px rgba(249, 168, 212, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* 搜索框 */
+        #search-input {
+            background-color: #25203a;
+            border-color: #4c3f6b;
+            color: #e0d4ff;
+        }
+        
+        #search-input:focus {
+            border-color: #f9a8d4;
+            box-shadow: 0 0 0 3px rgba(249, 168, 212, 0.1);
+        }
+
+        /* 实时热力图动画保持 */
+        .live-heatmap-cell {
+            animation: heatmapPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-origin: center;
+        }
+
+        @keyframes heatmapPop {
+            0% {
+                transform: scale(0.2);
+                opacity: 0;
+            }
+            60% {
+                transform: scale(1.3);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* 小夜专属二次元装饰 */
+        .anime-accent {
+            color: #f9a8d4;
+        }
+
+        /* 轻微漂浮装饰动画 (中世纪幻想风格) */
+        .anime-float {
+            position: absolute;
+            pointer-events: none;
+            user-select: none;
+            z-index: 1;
+            animation: animeFloat 22s infinite ease-in-out;
+        }
+
+        @keyframes animeFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-35px) rotate(12deg); }
+        }
+    </style>
+</head>
+<body class="bg-[#0b0f19] text-slate-200">
+    <!-- ==================== 配置区域（小白最重要！） ==================== -->
+    <script>
+        // ==================== 请在这里修改你的个人信息 ====================
+        const blogConfig = {
+            name: "夜雨声烦",                          // ← 改成你的名字
+            title: "拿捏少御好多年",           // ← 改成你的身份
+            shortBio: "如果你是少御，那我们可以聊聊。", // ← 改成一句话介绍
+            avatar: "./avatar.jpg",   // ← 已修复为安全文件名（避免中文文件名在本地打开时不显示）
+            
+            about: `你好，我是你爹.<br><br>
+                    没事请不要烦我 喜欢清净.`,
+            
+            // 联系方式（请修改）
+            email: "dupes.snub9b@icloud.com",
+            wechat: "780355",
+            qq: "780355",  // ← 新增 QQ 联系方式
+            github: "https://github.com/yeyeyeyeyeovo"  // ← 已更新为你的 GitHub ID
+        };
+
+        // ==================== 博客文章配置（在这里添加/修改文章） ====================
+        const posts = [
+            {
+                id: 7,
+                title: "AI 感想杂谈",
+                date: "2025-04-05",
+                category: "思考",
+                readTime: "10分钟",
+                excerpt: "AI 的出现打开了一个史无前例的自由窗口期，但这个窗口终将关闭。人与 AI 的互动方式，决定了我们是变聪明还是变笨。",
+                content: `
+                    <p>最近我在工作和个人的兴趣项目上同时用 AI 爆肝，整得都点喘息不过来了。趁着许多感触还比较新鲜，我来写一篇非常笼统的 AI 杂谈，也免得今后在这个话题上无休无止地发表拙见。</p>
+                    
+                    <h2>前所未有的自由时代</h2>
+                    <p>AI 的横空出世让世界出现了「欣喜若狂」和「哀鸿遍野」的两级发展。人们在巨大的不确定面前，担忧和恐惧是合情合理的。不过先撇开 AI 对于劳动力市场和资本分配的影响不谈，如果光看 AI 作为一项技术革命的影响，我认为它给我们这代人打开了一个史无前例的自由开放的窗口期。</p>
+                    
+                    <p>虽然由 OpenAI 和 Anthropic 领跑的模型是封闭的，但开放模型在性能上紧随其后。重点并不是它们性能上的差异，而是它们的互通性——所有的模型都说「人话」！这种人、机器之间互通性，被 LLM 直接提升到了前所未有的高度。</p>
+                    
+                    <p>LLM 的出现，让语言基本不再成为人与人书面沟通的障碍，人与机器沟通的障碍也被削掉好几个零。更重要的是，LLM 可能是科技界第一次开发出了毫无互通障碍的标准。</p>
+                    
+                    <p>但是按照任何柠檬市场的宿命，我认为 AI 跟 Web 1.0 的互联网一样，高度的自由互通是不可持续的。这个自由的时代，我认为终究只能是一个「窗口期」。三十年之后，主要的几个 AI 各说各的「方言」，是一个极大概率的事件。下一代会像我们怀念 30 年前的互联网一样，怀念会说人话的 AI、白菜价格的 Tokens。</p>
+                    
+                    <h2>AI 到底是聪明还是笨</h2>
+                    <p>我从实际经历中总结出来的规律是：如果你只是向 AI 描述需求，你会觉得 AI 很笨；如果跟 AI 探讨实现的细节，你觉得 AI 非常聪明。</p>
+                    
+                    <p>前一种 AI 的使用方法，其实容易陷入「不知道自己无知」的境况。我几乎没有前端开发的经验，所以我只能不断描述自己想要的界面，让 AI 一遍一遍地改。但是到了后端，我就特别有热情跟 AI 探讨各种设计细节。我发现 AI 真的是挺聪明的，跟它聊什么设计细节，它马上就能明白我的深层考量。</p>
+                    
+                    <p>这两种 AI 使用方法的脑力消耗天差地别：如果只跟 AI 讲需求，几乎不需要动脑子；但是如果跟 AI 探讨实现细节，我觉得我的脑力经常不够用——因为 AI 思考的速度太快了，那种心累的感觉，就像是找了一个 IQ 吊打我的人聊天一样。</p>
+                    
+                    <p>所以，我用切身体会得出了一个结论：人用 AI 可以变笨，也可以变聪明，完全取决于他跟 AI 互动的模式。</p>
+                    
+                    <h2>AI 带来的恼怒</h2>
+                    <p>当今社会，许多人对 AI 的出现感到焦虑、绝望甚至是愤怒，我觉得更精确的描述应该叫做「恼怒」。因为扪心自问，最直接的恼怒是来源于我们人生投资的失败——花了大半辈子听从了「学好数理化，走遍天下都不怕」这样的「宇宙真理」，结果短短两三年，积攒的编程能力、数理能力，在 AI 的面前不堪一击。</p>
+                    
+                    <p>今天，快毕业的体校学生不会站出来忿忿不平，而被长辈和社会灌输「学而仕则优」的一群人，闯过了一段又一段的考试独木桥，却发现正确的方向可能根本不是「前方」这么简单。</p>
+                `
+            },
+            {
+                id: 6,
+                title: "Windows下自动备份MySQL脚本",
+                date: "2025-03-10",
+                category: "技术",
+                readTime: "12分钟",
+                excerpt: "服务器自动备份数据库总是出问题？用这个优化后的批处理脚本 + Windows任务计划程序，轻松实现每天自动备份、压缩、清理过期文件。",
+                content: `
+                    <p>服务器用的宝塔面板，自动备份的数据库恢复不出来，估计Windows的BT不够完善，还是自己搞批处理添加到计划任务吧。</p>
+                    
+                    <h2>为什么用批处理脚本</h2>
+                    <p>宝塔的自动备份有时恢复不正常，尤其是Windows环境。自己写一个简单的批处理脚本，配合Windows任务计划程序，是最稳定可靠的方式。</p>
+                    
+                    <h2>推荐实用改进版（强烈建议使用）</h2>
+                    <p>原脚本比较简陋（日期格式不靠谱、无目录创建、无压缩、无过期清理）。下面是优化后的版本：</p>
+                    
+                    <pre style="background:#1f1b33; padding:16px; border-radius:8px; overflow-x:auto; border:1px solid #4c3f6b;"><code>@echo off
+chcp 65001 &gt;nul
+setlocal enabledelayedexpansion
+
+:: ================== 配置区 ==================
+set "MYSQL_PATH=C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin"
+set "USER=root"
+set "PASSWORD=你的密码"
+set "DATABASES=你的数据库名"     :: 多个数据库用空格隔开，留空则备份所有库
+set "BACKUP_DIR=D:\\mysql_backup"
+set "KEEP_DAYS=30"
+:: ===========================================
+
+if not exist "%BACKUP_DIR%" md "%BACKUP_DIR%"
+
+:: 可靠日期格式 YYYYMMDD
+for /f %%a in ('wmic OS Get localdatetime ^| find "."') do set "dt=%%a"
+set "YYYY=%dt:~0,4%"
+set "MM=%dt:~4,2%"
+set "DD=%dt:~6,2%"
+set "DATE_STR=%YYYY%%MM%%DD%"
+
+set "SQL_FILE=all_backup_%DATE_STR%.sql"
+set "ZIP_FILE=all_backup_%DATE_STR%.7z"
+
+echo [%DATE_STR%] 开始备份...
+
+if "%DATABASES%"=="" (
+    "%MYSQL_PATH%\\mysqldump.exe" -u%USER% -p%PASSWORD% --all-databases --routines --triggers --single-transaction &gt; "%BACKUP_DIR%\\%SQL_FILE%"
+) else (
+    "%MYSQL_PATH%\\mysqldump.exe" -u%USER% -p%PASSWORD% --databases %DATABASES% --routines --triggers --single-transaction &gt; "%BACKUP_DIR%\\%SQL_FILE%"
+)
+
+:: 压缩（推荐安装7-Zip）
+if exist "C:\\Program Files\\7-Zip\\7z.exe" (
+    "C:\\Program Files\\7-Zip\\7z.exe" a -mx9 "%BACKUP_DIR%\\%ZIP_FILE%" "%BACKUP_DIR%\\%SQL_FILE%"
+    del "%BACKUP_DIR%\\%SQL_FILE%"
+    echo 备份完成: %ZIP_FILE%
+) else (
+    echo 备份完成: %SQL_FILE% （未安装7-Zip，未压缩）
+)
+
+:: 删除超过N天的备份
+forfiles /p "%BACKUP_DIR%" /m *.7z /d -%KEEP_DAYS% /c "cmd /c del @path" 2&gt;nul
+forfiles /p "%BACKUP_DIR%" /m *.sql /d -%KEEP_DAYS% /c "cmd /c del @path" 2&gt;nul
+
+echo MySQL自动备份任务执行完毕！</code></pre>
+                    
+                    <h2>使用方法</h2>
+                    <ol style="margin-left:1.25rem; margin-bottom:1.25rem;">
+                        <li>根据实际情况修改配置区（MySQL路径、密码、数据库名、备份目录）。</li>
+                        <li>将代码保存为 <code>mysql_backup.bat</code>。</li>
+                        <li>打开 <strong>Windows任务计划程序</strong>，创建新任务，指向这个 <code>.bat</code> 文件，设置每天定时执行（建议以最高权限运行）。</li>
+                    </ol>
+                    
+                    <h2>注意事项</h2>
+                    <ul style="margin-left:1.25rem; margin-bottom:1.25rem;">
+                        <li>密码明文保存在脚本中，生产环境建议使用 MySQL 配置文件方式避免明文密码。</li>
+                        <li>不同MySQL版本路径可能不同（MySQL Server 8.0 / MariaDB 等），请自行调整。</li>
+                        <li>强烈推荐安装 <strong>7-Zip</strong> 进行压缩。</li>
+                        <li>可以改成备份多个指定数据库。</li>
+                    </ul>
+                    
+                    <p>需要我帮你调整成只备份指定数据库、或者改成 PowerShell 版本，也可以继续说。</p>
+                `
+            },
+            {
+                id: 1,
+                title: "深夜咖啡馆",
+                date: "2025-02-08",
+                category: "生活",
+                readTime: "8分钟",
+                excerpt: "雨夜里，我又一次推开那家熟悉的咖啡馆。暖黄的灯光、磨砂的木桌、老旧的唱片机……",
+                content: `
+                    <p>雨夜里，我又一次推开那家熟悉的咖啡馆。</p>
+                    <p>暖黄的灯光、磨砂的木桌、老旧的唱片机，这些元素几乎没有变过。唯一变化的，是坐在角落写东西的我。</p>
+                    
+                    <h2>为什么喜欢深夜</h2>
+                    <p>白天太吵，深夜却安静得像另一个世界。思维好像会变得更清晰，情感也更容易被触动。</p>
+                    <p>我常常在这里写完一篇文章，或者只是发呆。店员已经认识我了，会默认给我加一份桂花拿铁。</p>
+                    
+                    <h2>小确幸</h2>
+                    <p>真正让人快乐的，从来不是什么大事，而是一些很小的瞬间：</p>
+                    <ul style="margin-left:1.25rem; margin-bottom:1.25rem;">
+                        <li>雨点敲在玻璃上的声音</li>
+                        <li>咖啡第一口苦、第二口甜</li>
+                        <li>手机突然没电，于是真正把注意力放在眼前</li>
+                    </ul>
+                    
+                    <p>希望你也有属于自己的「深夜咖啡馆」。</p>
+                `
+            },
+            {
+                id: 2,
+                title: "我为什么开始写博客",
+                date: "2025-01-25",
+                category: "思考",
+                readTime: "6分钟",
+                excerpt: "很多人问我，为什么还要写博客？这个时代，写东西真的有意义吗？",
+                content: `
+                    <p>很多人问我，为什么还要写博客？</p>
+                    <p>这个时代，短视频、直播、AI 写作已经很发达了，普通人写东西真的有价值吗？</p>
+                    
+                    <h2>写给未来的自己</h2>
+                    <p>我写博客最主要的原因，是写给 5 年、10 年后的自己看的。</p>
+                    <p>当我忘记曾经的困惑、曾经的快乐、曾经的幼稚时，这些文字会提醒我：我曾经这样走过。</p>
+                    
+                    <h2>连接真实的陌生人</h2>
+                    <p>写博客让我认识了很多有趣的人。他们可能来自不同的城市、不同的行业，但因为一篇文章产生了共鸣。</p>
+                    <p>这种连接，比任何社交媒体都更深、更久。</p>
+                    
+                    <p>所以我还是会继续写下去，哪怕一年只写十几篇。</p>
+                `
+            },
+            {
+                id: 3,
+                title: "读完《原子习惯》后的真实改变",
+                date: "2025-01-12",
+                category: "读书",
+                readTime: "10分钟",
+                excerpt: "这本书我读了三遍，它真正改变了我的，不是「每天进步1%」这句话，而是更底层的东西。",
+                content: `
+                    <p>《原子习惯》我读了三遍。它真正改变我的，不是那句著名的「每天进步1%」。</p>
+                    
+                    <h2>我真正学会的事</h2>
+                    <p>这本书让我意识到：改变行为最难的地方从来不是「坚持」，而是「设计环境」。</p>
+                    <p>比如我想每天写 500 字，我没有去逼自己，而是把电脑直接开着，放在书桌上最显眼的位置。</p>
+                    
+                    <h2>两个让我受益最大的方法</h2>
+                    <p>1. <strong>把坏习惯变得不可见</strong> —— 我把手机放进抽屉，并把充电线收起来。</p>
+                    <p>2. <strong>把好习惯变得显而易见</strong> —— 跑鞋永远放在门口，运动服叠在最上面。</p>
+                    
+                    <p>这些小改变累积起来，真的很恐怖。</p>
+                `
+            },
+            {
+                id: 4,
+                title: "在小城生活的第 300 天",
+                date: "2024-12-30",
+                category: "生活",
+                readTime: "7分钟",
+                excerpt: "从北上广辞职回来，在老家小城已经待了 300 天。很多人问我后悔吗？",
+                content: `
+                    <p>从北上广辞职回来，在老家小城已经待了整整 300 天。</p>
+                    
+                    <h2>最真实的变化</h2>
+                    <p>最大的变化不是收入减少，而是时间变多了。</p>
+                    <p>以前每天通勤 2 小时，现在走路 8 分钟就能到「公司」（其实就是家里的书房）。</p>
+                    <p>我开始有时间认真做饭、散步、和父母聊天、甚至发呆。</p>
+                    
+                    <h2>也遇到的困难</h2>
+                    <p>当然也有不适应的时候：信息闭塞、选择变少、朋友越来越少。</p>
+                    <p>但我慢慢学会了和自己相处，也学会了主动创造连接。</p>
+                    
+                    <p>小城生活没有对错，只有适不适合。</p>
+                `
+            },
+            {
+                id: 5,
+                title: "关于「慢」这件事",
+                date: "2024-12-15",
+                category: "思考",
+                readTime: "5分钟",
+                excerpt: "我们总在追求更快、更高效。但我发现，真正重要的东西，都需要「慢」。",
+                content: `
+                    <p>我们总在追求更快、更高效。</p>
+                    <p>但这几年我越来越发现：真正重要的东西，都需要「慢」。</p>
+                    
+                    <h2>慢下来的价值</h2>
+                    <ul style="margin-left:1.25rem; margin-bottom:1.25rem;">
+                        <li>慢吃饭 → 胃舒服，体重也稳了</li>
+                        <li>慢思考 → 不会做很多蠢决定</li>
+                        <li>慢交朋友 → 关系反而更持久</li>
+                        <li>慢写东西 → 偶尔能写出让自己都惊讶的句子</li>
+                    </ul>
+                    
+                    <p>「慢」不是偷懒，而是给生命留出空间。</p>
+                    <p>在这个越来越快的世界里，能慢下来的人，反而显得珍贵。</p>
+                `
+            }
+        ];
+    </script>
+    <!-- ==================== 配置区域结束 ==================== -->
+
+    <!-- 头像设置：使用配置中的路径，并添加加载失败回退 -->
+    <script>
+        function setHeroAvatar() {
+            const img = document.getElementById('hero-avatar');
+            if (!img || !blogConfig || !blogConfig.avatar) return;
+            
+            img.src = blogConfig.avatar;
+            
+            // 如果图片加载失败（常见于中文文件名或路径问题），显示名字首字母作为优雅回退
+            img.onerror = function() {
+                img.style.display = 'none';
+                const fallback = document.createElement('div');
+                fallback.className = 'w-full h-full flex items-center justify-center bg-emerald-900 text-emerald-400 text-6xl font-semibold rounded-3xl';
+                fallback.textContent = (blogConfig.name || '博').charAt(0);
+                img.parentNode.appendChild(fallback);
+            };
+        }
+        
+        // 尽早设置头像（DOMContentLoaded）
+        document.addEventListener('DOMContentLoaded', setHeroAvatar);
+    </script>
+
+    <!-- 导航栏 -->
+    <nav class="sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-x-3">
+                    <img id="nav-logo" 
+                         src="./avatar.jpg" 
+                         class="w-8 h-8 rounded-full object-cover ring-1 ring-slate-700 shadow-sm flex-shrink-0"
+                         alt="头像">
+                    <span class="font-semibold text-xl tracking-tight" id="nav-name">夜雨声烦</span>
+                </div>
+                
+                <div class="hidden md:flex items-center gap-x-8 text-sm">
+                    <a href="#about" class="nav-link text-slate-400 font-medium">关于我</a>
+                    <a href="#posts" class="nav-link text-slate-400 font-medium">全部文章</a>
+                    <a href="#contact" class="nav-link text-slate-400 font-medium">联系</a>
+                </div>
+                
+                <div class="flex items-center gap-x-3">
+                    <button onclick="showCustomizeTip()" 
+                            class="px-4 py-2 text-sm bg-[#25203a] border border-[#4c3f6b] hover:bg-[#3f3659] rounded-2xl text-[#c4b5fd] flex items-center gap-x-2 transition-colors">
+                        <i class="fa-solid fa-edit text-xs"></i>
+                        <span class="hidden sm:inline">如何修改</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄区 / 个人介绍 (全屏哥特背景) -->
+    <div class="hero-bg">
+        <!-- 哥特风氛围装饰 -->
+        <span class="anime-float" style="top: 12%; left: 6%; animation-delay: 0s; font-size: 18px; color: #a5b4c8; opacity: 0.12;">✧</span>
+        <span class="anime-float" style="top: 42%; right: 8%; animation-delay: 8s; font-size: 14px; color: #c9b38a; opacity: 0.1;">✦</span>
+        <span class="anime-float" style="top: 65%; left: 9%; animation-delay: 15s; font-size: 13px; color: #a5b4c8; opacity: 0.15;">✧</span>
+        
+        <div class="max-w-5xl mx-auto px-6 pt-16 pb-20 relative z-10">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <!-- 左侧文字 -->
+                <div class="flex-1 text-center md:text-left">
+                    <div onclick="cycleDadStatus()" 
+                         class="inline-flex items-center gap-x-2 px-4 py-1.5 bg-[#25203a] rounded-3xl shadow-sm border border-[#4c3f6b] mb-6 cursor-pointer hover:border-[#f9a8d4] active:bg-[#1f1b33] transition-colors group">
+                        <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                        <span id="dad-status" class="text-sm text-[#d1c4f0] group-hover:text-[#f9a8d4] transition-colors">目前在互联网沉睡</span>
+                    </div>
+                    
+                    <h1 class="text-6xl md:text-7xl font-semibold tracking-tighter mb-4 text-white" id="hero-name">
+                        我是夜雨声烦
+                    </h1>
+                    
+                    <p class="text-2xl text-[#d1c4f0] mb-8" id="hero-title">拿捏少御好多年</p>
+                    
+                    <p class="max-w-md text-lg text-[#b8a9d8] mb-10 mx-auto md:mx-0" id="hero-bio">
+                        如果你是少御，那我们可以聊聊。
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                        <a href="#posts" 
+                           class="px-8 py-3.5 bg-[#c4b5fd] hover:bg-[#d1c4f0] transition-all text-[#1a1625] rounded-3xl font-medium flex items-center justify-center gap-x-2 shadow-lg shadow-[#c4b5fd]/30">
+                            <span>阅读我的文章</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                        <a href="#about" 
+                           class="px-8 py-3.5 bg-[#25203a] hover:bg-[#3f3659] transition-all border border-[#4c3f6b] text-[#d1c4f0] rounded-3xl font-medium flex items-center justify-center gap-x-2">
+                            了解我
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 右侧头像 -->
+                <div class="flex-shrink-0">
+                    <div class="relative">
+                        <div class="w-64 h-64 md:w-72 md:h-72 rounded-3xl overflow-hidden shadow-2xl border-8 border-white ring-1 ring-slate-100">
+                            <img id="hero-avatar" 
+                                 src="" 
+                                 class="w-full h-full object-cover"
+                                 alt="头像"
+                                 loading="eager">
+                        </div>
+                        <div class="absolute -bottom-3 -right-3 bg-[#25203a] px-4 py-1.5 rounded-3xl shadow border border-[#4c3f6b] text-sm flex items-center gap-x-2">
+                            <i class="fa-solid fa-heart text-red-400"></i>
+                            <span class="font-medium text-[#d1c4f0]">又来看爸爸了？</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 关于我 -->
+    <div id="about" class="max-w-5xl mx-auto px-6 py-20 scroll-mt-16">
+        <div class="max-w-2xl mx-auto text-center mb-12">
+            <h2 class="text-4xl font-semibold tracking-tight mb-4 section-title">关于我</h2>
+            <p class="text-[#b8a9d8]">简单介绍一下自己</p>
+        </div>
+        
+        <div class="max-w-3xl mx-auto">
+            <div class="dark-card rounded-3xl p-10 md:p-14 text-lg leading-relaxed" id="about-content">
+                <!-- 内容由 JS 填充 -->
+            </div>
+
+            <!-- QQ 主页截图展示 -->
+            <div class="mt-8">
+                <div onclick="showQQModal()" 
+                     class="group dark-card hover:shadow-xl transition-all rounded-3xl p-6 cursor-pointer">
+                    <div class="flex items-center gap-x-3 mb-4">
+                        <i class="fa-brands fa-qq text-emerald-600 text-xl"></i>
+                        <span class="font-semibold text-lg tracking-tight">My QiCQ</span>
+                        <span class="text-xs px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full">点击查看大图</span>
+                    </div>
+                    
+                    <div class="relative overflow-hidden rounded-2xl border border-slate-700 bg-slate-900">
+                        <img src="./qq-home.png" 
+                             alt="My QiCQ" 
+                             class="w-full object-cover transition-transform group-hover:scale-[1.015]">
+                        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/5"></div>
+                    </div>
+                    
+                    <div class="text-center mt-3 text-xs text-slate-500">点击可放大查看完整截图</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 技术痕迹（高级感彩蛋） ==================== -->
+    <div id="tech" class="max-w-5xl mx-auto px-6 py-16 scroll-mt-16">
+        <div class="max-w-2xl mx-auto text-center mb-10">
+            <h2 class="text-4xl font-semibold tracking-tight mb-3 section-title">小伤痕</h2>
+            <p class="text-[#b8a9d8]">其实也没写多少，别看了</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+            
+            <!-- 爸爸的终端（最能装逼的部分） -->
+            <div class="lg:col-span-3 bg-[#0a0c10] border border-slate-800 rounded-3xl p-5 shadow-inner overflow-hidden">
+                <div class="flex items-center justify-between mb-3 px-1">
+                    <div class="flex items-center gap-x-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                        <span class="ml-3 text-[#c4b5fd] text-xs font-mono tracking-[1px]">nyan@night ~ 小夜の书房</span>
+                    </div>
+                    <span class="text-[10px] text-slate-500 font-mono">type "help"</span>
+                </div>
+                
+                <!-- Terminal Body -->
+                <div id="terminal-body" 
+                     class="bg-black/60 rounded-2xl p-4 h-[268px] font-mono text-sm text-emerald-300 overflow-y-auto leading-relaxed border border-slate-800"
+                     style="scrollbar-width: thin;">
+                    <div id="terminal-output" class="space-y-1 text-[13px]"></div>
+                    
+                    <!-- Input Line -->
+                    <div class="flex items-center gap-2 mt-2">
+                        <span class="text-emerald-500 select-none">$</span>
+                        <input id="terminal-input" 
+                               type="text" 
+                               class="flex-1 bg-transparent outline-none text-emerald-300 placeholder:text-emerald-900 font-mono text-sm"
+                               placeholder="输入命令... (help / commit / matrix / roast)"
+                               autocomplete="off"
+                               onkeydown="handleTerminalInput(event)">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 小夜の热力图（GitHub 风格） -->
+            <div class="lg:col-span-2 dark-card rounded-3xl p-5">
+                <div class="flex items-center justify-between mb-4 px-1">
+                    <div>
+                        <div class="font-semibold text-slate-100 tracking-tight">小夜の热力图</div>
+                        <div class="text-[10px] text-slate-400">2025-2026 · 痕迹有点少</div>
+                    </div>
+                    <div class="text-right text-[10px] text-emerald-600 font-mono"><span id="commit-count">47</span> commits<br><span class="text-slate-400">（大部分是摸鱼）</span></div>
+                </div>
+                
+                <!-- SVG 热力图 -->
+                <div id="heatmap-container" class="overflow-x-auto pb-2"></div>
+                
+                <div class="mt-3 text-[10px] text-slate-400 flex items-center justify-between px-1">
+                    <span>Less</span>
+                    <div class="flex gap-1">
+                        <div class="w-2.5 h-2.5 bg-slate-700 rounded-sm"></div>
+                        <div class="w-2.5 h-2.5 bg-emerald-800 rounded-sm"></div>
+                        <div class="w-2.5 h-2.5 bg-emerald-600 rounded-sm"></div>
+                        <div class="w-2.5 h-2.5 bg-emerald-400 rounded-sm"></div>
+                    </div>
+                    <span>More (其实也没多少)</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-5 text-[11px] text-[#b8a9d8]">
+            提示：终端输入 <span class="font-mono text-[#f9a8d4]">commit</span> 会在热力图上实时画格子 · <span class="font-mono text-[#f9a8d4]">matrix</span> 或 Konami 码触发黑客雨
+        </div>
+    </div>
+
+    <!-- 文章列表 -->
+    <div id="posts" class="scroll-mt-16">
+        <div class="max-w-5xl mx-auto px-6 py-20">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-10 gap-y-4">
+                <div>
+                    <h2 class="text-4xl font-semibold tracking-tight section-title mb-2">全部文章</h2>
+                    <p class="text-[#b8a9d8]">记录生活里的小想法</p>
+                </div>
+                
+                <!-- 搜索框 -->
+                <div class="relative w-full md:w-80">
+                    <input type="text" 
+                           id="search-input"
+                           onkeyup="filterPosts()"
+                           placeholder="搜索文章标题或内容..." 
+                           class="w-full bg-slate-900 border border-slate-700 focus:border-emerald-500 transition-colors pl-11 py-3 rounded-3xl text-sm outline-none">
+                    <i class="fa-solid fa-search absolute left-4 top-4 text-slate-400"></i>
+                </div>
+            </div>
+            
+            <!-- 文章卡片容器 -->
+            <div id="posts-grid" 
+                 class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 由 JavaScript 动态渲染 -->
+            </div>
+            
+            <div id="no-results" class="hidden text-center py-12">
+                <i class="fa-regular fa-folder-open text-5xl text-[#6b5b8a] mb-4"></i>
+                <p class="text-slate-400">没有找到匹配的文章</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 联系方式 -->
+    <div id="contact" class="max-w-5xl mx-auto px-6 py-20 scroll-mt-16">
+        <div class="max-w-2xl mx-auto text-center">
+            <h2 class="text-4xl font-semibold tracking-tight mb-4 section-title">联系我</h2>
+            <p class="text-[#b8a9d8] mb-10">很不高兴认识你</p>
+            
+            <div class="flex flex-wrap justify-center gap-4 text-sm">
+                <a href="#" id="contact-email" 
+                   class="flex items-center gap-x-3 px-6 py-4 contact-card rounded-3xl transition-colors">
+                    <i class="fa-solid fa-envelope text-xl text-emerald-600 w-5"></i>
+                    <div class="text-left">
+                        <div class="text-xs text-slate-500">邮箱</div>
+                        <div class="font-medium">dupes.snub9b@icloud.com</div>
+                    </div>
+                </a>
+                
+                <a href="#" id="contact-wechat"
+                   class="flex items-center gap-x-3 px-6 py-4 contact-card rounded-3xl transition-colors">
+                    <i class="fa-brands fa-weixin text-xl text-emerald-600 w-5"></i>
+                    <div class="text-left">
+                        <div class="text-xs text-slate-500">微信</div>
+                        <div class="font-medium">780355</div>
+                    </div>
+                </a>
+                
+                <!-- QQ -->
+                <a href="#" id="contact-qq"
+                   class="flex items-center gap-x-3 px-6 py-4 contact-card rounded-3xl transition-colors">
+                    <i class="fa-brands fa-qq text-emerald-600 text-xl w-5"></i>
+                    <div class="text-left">
+                        <div class="text-xs text-slate-500">QQ</div>
+                        <div class="font-medium">780355</div>
+                    </div>
+                </a>
+                
+                <a href="#" id="contact-github" target="_blank"
+                   class="flex items-center gap-x-3 px-6 py-4 contact-card rounded-3xl transition-colors">
+                    <i class="fa-brands fa-github text-xl text-emerald-600 w-5"></i>
+                    <div class="text-left">
+                        <div class="text-xs text-slate-500">GitHub</div>
+                        <div class="font-medium">yeyeyeyeyeovo</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="py-8 bg-[#0b0f19]">
+        <div class="max-w-5xl mx-auto px-6 text-center text-sm text-slate-500">
+            <p>© 2021-2026 小夜</p>
+            <p class="mt-1 text-xs">Powered By Grok Build</p>
+        </div>
+    </footer>
+
+    <!-- 阅读文章的弹窗 Modal -->
+    <div id="post-modal" onclick="if (event.target.id === 'post-modal') closeModal()" 
+         class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+        <div onclick="event.stopImmediatePropagation()" 
+             class="modal w-full max-w-3xl max-h-[92vh] rounded-3xl overflow-hidden shadow-2xl flex flex-col">
+            
+            <!-- Modal Header -->
+            <div class="px-8 pt-8 pb-4 border-b border-slate-700 flex items-start justify-between">
+                <div class="flex-1 pr-6">
+                    <div class="flex items-center gap-x-3 mb-3">
+                        <span id="modal-category" 
+                              class="px-3 py-1 text-xs font-medium bg-emerald-800 text-emerald-300 rounded-2xl"></span>
+                        <span id="modal-date" class="text-sm text-slate-400"></span>
+                        <span id="modal-readtime" class="text-sm text-slate-500"></span>
+                    </div>
+                    <h2 id="modal-title" class="text-3xl font-semibold tracking-tight leading-tight text-white"></h2>
+                </div>
+                <button onclick="closeModal()" 
+                        class="text-slate-400 hover:text-white p-2 -mr-2 -mt-2 transition-colors">
+                    <i class="fa-solid fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <!-- Modal Content -->
+            <div class="p-8 overflow-auto flex-1 post-content" id="modal-content">
+                <!-- 文章正文由 JS 填充 -->
+            </div>
+            
+            <div class="px-8 py-5 border-t border-slate-700 bg-slate-900 flex justify-end">
+                <button onclick="closeModal()" 
+                        class="px-5 py-2 text-sm font-medium text-slate-300 hover:text-white transition-colors">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- QQ 主页大图弹窗 -->
+    <div id="qq-modal" onclick="if (event.target.id === 'qq-modal') closeQQModal()" 
+         class="hidden fixed inset-0 bg-black/90 backdrop-blur-sm z-[110] flex items-center justify-center p-4">
+        <div onclick="event.stopImmediatePropagation()" class="relative max-w-[95vw] max-h-[92vh]">
+            <button onclick="closeQQModal()" 
+                    class="absolute -top-3 -right-3 bg-slate-800 text-slate-200 hover:text-white w-9 h-9 rounded-full flex items-center justify-center shadow-lg text-xl transition-colors border border-slate-700">
+                <i class="fa-solid fa-times"></i>
+            </button>
+            <img src="./qq-home.png" alt="My QiCQ" 
+                 class="max-w-[95vw] max-h-[88vh] rounded-3xl shadow-2xl object-contain bg-slate-900">
+        </div>
+    </div>
+
+    <!-- ==================== 问小夜弹窗（有意思的彩蛋） ==================== -->
+    <div id="dad-chat-modal" onclick="if (event.target.id === 'dad-chat-modal') closeDadChat()" 
+         class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[120] flex items-center justify-center p-4">
+        <div onclick="event.stopImmediatePropagation()" 
+             class="modal w-full max-w-md max-h-[88vh] rounded-3xl overflow-hidden shadow-2xl flex flex-col border border-slate-700">
+            
+            <!-- Modal Header -->
+            <div class="px-6 pt-5 pb-4 border-b border-slate-700 flex items-center justify-between bg-slate-900">
+                <div class="flex items-center gap-x-3">
+                    <div class="w-9 h-9 bg-emerald-600 rounded-2xl flex items-center justify-center text-white text-lg flex-shrink-0">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+                    <div>
+                        <div class="font-semibold tracking-tight">问小夜</div>
+                        <div class="text-[10px] text-emerald-600 -mt-0.5">但别指望有好答案</div>
+                    </div>
+                </div>
+                <button onclick="closeDadChat()" 
+                        class="text-[#b8a9d8] hover:text-white p-2 -mr-1 -mt-1 transition-colors">
+                    <i class="fa-solid fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Chat Area -->
+            <div id="dad-chat-area" 
+                 class="flex-1 overflow-y-auto p-5 space-y-4 bg-[#1f1b33] text-sm leading-relaxed min-h-[240px] max-h-[52vh]">
+                <!-- 消息由 JS 动态插入 -->
+            </div>
+            
+            <!-- Quick hints -->
+            <div class="px-5 pt-1 pb-2 text-[10px] text-slate-400 border-t border-slate-700 bg-slate-900">
+                试试输入：钱、女朋友、为什么、你好、滚
+            </div>
+            
+            <!-- Input Area -->
+            <div class="p-4 border-t border-slate-700 bg-slate-900 flex gap-2">
+                <input id="dad-chat-input" 
+                       type="text" 
+                       placeholder="跟小夜说点啥...（别废话）" 
+                       class="flex-1 bg-slate-900 border border-slate-700 focus:border-emerald-500 rounded-2xl px-4 py-2.5 text-sm outline-none text-slate-200"
+                       onkeydown="if (event.key === 'Enter') sendDadMessage()">
+                <button onclick="sendDadMessage()" 
+                        class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 transition-colors text-white rounded-2xl text-sm font-medium flex items-center gap-x-1.5 shadow">
+                    <span>发送</span>
+                    <i class="fa-solid fa-paper-plane text-xs"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 悬浮「问小夜」按钮（毒舌彩蛋） -->
+    <button onclick="openDadChat()" 
+            class="fixed bottom-6 right-6 z-[90] flex items-center gap-x-2.5 px-5 py-3.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white text-sm font-medium rounded-3xl shadow-xl shadow-emerald-600/30 transition-all active:scale-[0.985] hover:shadow-2xl">
+        <i class="fa-solid fa-comment-dots text-base"></i>
+        <span class="font-semibold tracking-tight">问小夜</span>
+    </button>
+
+    <!-- Matrix 代码雨 Canvas（高级彩蛋） -->
+    <canvas id="matrix-canvas" class="hidden fixed inset-0 z-[200] pointer-events-none"></canvas>
+
+    <script>
+        // ==================== 主要功能脚本 ====================
+        
+        // 填充个人信息（从配置读取）
+        function initPersonalInfo() {
+            // 导航
+            document.getElementById('nav-name').innerText = blogConfig.name;
+            
+            // 顶部导航头像（小圆形，放在名字旁边）
+            const navLogo = document.getElementById('nav-logo');
+            if (navLogo) {
+                navLogo.src = blogConfig.avatar;
+                navLogo.onerror = function() {
+                    // 失败时优雅回退为小绿圆 + 首字母
+                    navLogo.style.display = 'none';
+                    const fb = document.createElement('div');
+                    fb.className = 'w-8 h-8 bg-emerald-500 rounded-2xl flex items-center justify-center text-white text-sm font-semibold flex-shrink-0';
+                    fb.textContent = (blogConfig.name || '夜').charAt(0);
+                    navLogo.parentNode.insertBefore(fb, navLogo);
+                };
+            }
+            
+            // Hero
+            document.getElementById('hero-name').innerText = `我是${blogConfig.name}`;
+            document.getElementById('hero-title').innerText = blogConfig.title;
+            document.getElementById('hero-bio').innerText = blogConfig.shortBio;
+            
+            // 使用统一的健壮头像设置函数（带失败回退）
+            setHeroAvatar();
+            
+            // 关于我
+            document.getElementById('about-content').innerHTML = blogConfig.about;
+            
+            // 联系方式
+            const emailEl = document.getElementById('contact-email');
+            emailEl.href = `mailto:${blogConfig.email}`;
+            emailEl.querySelector('div:last-child').innerHTML = `<div class="font-medium">${blogConfig.email}</div>`;
+            
+            const wechatEl = document.getElementById('contact-wechat');
+            wechatEl.querySelector('div:last-child').innerHTML = `<div class="font-medium">${blogConfig.wechat}</div>`;
+            
+            const qqEl = document.getElementById('contact-qq');
+            qqEl.href = `tencent://message/?uin=${blogConfig.qq}`;
+            qqEl.querySelector('div:last-child').innerHTML = `<div class="font-medium">${blogConfig.qq}</div>`;
+            
+            const githubEl = document.getElementById('contact-github');
+            githubEl.href = blogConfig.github;
+            // 安全提取 GitHub 显示名（兼容完整 URL 或纯用户名）
+            const githubDisplay = (blogConfig.github || '').replace(/^https?:\/\/(www\.)?github\.com\//i, '').replace(/\/$/, '') || blogConfig.github;
+            githubEl.querySelector('div:last-child').innerHTML = `<div class="font-medium">${githubDisplay}</div>`;
+        }
+        
+        // 渲染文章卡片
+        function renderPosts(filteredPosts = null) {
+            const container = document.getElementById('posts-grid');
+            const noResults = document.getElementById('no-results');
+            container.innerHTML = '';
+            
+            const toRender = filteredPosts || posts;
+            
+            if (toRender.length === 0) {
+                noResults.classList.remove('hidden');
+                return;
+            } else {
+                noResults.classList.add('hidden');
+            }
+            
+            toRender.forEach(post => {
+                const cardHTML = `
+                    <div onclick="openPost(${post.id})" 
+                         class="blog-card border border-[#4c3f6b] hover:border-[#f9a8d4] rounded-3xl p-7 cursor-pointer group">
+                        
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="tag">${post.category}</span>
+                            <span class="text-xs text-[#b8a9d8]">${post.date}</span>
+                        </div>
+                        
+                        <h3 class="font-semibold text-xl tracking-tight mb-3 group-hover:text-[#f9a8d4] transition-colors text-[#f3e8ff]">
+                            ${post.title}
+                        </h3>
+                        
+                        <p class="text-[#b8a9d8] line-clamp-3 text-[15px] leading-relaxed mb-5">
+                            ${post.excerpt}
+                        </p>
+                        
+                        <div class="flex items-center justify-between text-sm">
+                            <div class="flex items-center gap-x-1.5 text-[#f9a8d4]">
+                                <span class="font-medium">阅读全文</span>
+                                <i class="fa-solid fa-arrow-right text-xs transition-transform group-hover:translate-x-0.5"></i>
+                            </div>
+                            <span class="text-xs text-[#b8a9d8]">${post.readTime}</span>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHTML;
+            });
+        }
+        
+        // 搜索过滤
+        function filterPosts() {
+            const keyword = document.getElementById('search-input').value.toLowerCase().trim();
+            
+            if (!keyword) {
+                renderPosts(posts);
+                return;
+            }
+            
+            const filtered = posts.filter(post => 
+                post.title.toLowerCase().includes(keyword) || 
+                post.excerpt.toLowerCase().includes(keyword) ||
+                post.content.toLowerCase().includes(keyword)
+            );
+            
+            renderPosts(filtered);
+        }
+        
+        // 打开文章弹窗
+        function openPost(postId) {
+            const post = posts.find(p => p.id === postId);
+            if (!post) return;
+            
+            // 填充内容
+            document.getElementById('modal-title').innerText = post.title;
+            document.getElementById('modal-category').innerText = post.category;
+            document.getElementById('modal-date').innerText = post.date;
+            document.getElementById('modal-readtime').innerText = post.readTime;
+            document.getElementById('modal-content').innerHTML = post.content;
+            
+            // 显示弹窗
+            document.getElementById('post-modal').classList.remove('hidden');
+            document.getElementById('post-modal').classList.add('flex');
+            
+            // 禁止背景滚动
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('post-modal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // QQ 主页截图弹窗控制
+        function showQQModal() {
+            const modal = document.getElementById('qq-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeQQModal() {
+            const modal = document.getElementById('qq-modal');
+            if (modal) {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        }
+        
+        // 提示如何修改
+        function showCustomizeTip() {
+            const tipHTML = `
+                <div class="fixed inset-0 bg-black/70 backdrop-blur z-[200] flex items-center justify-center p-5" onclick="this.remove()">
+                    <div onclick="event.stopImmediatePropagation()" class="max-w-lg w-full dark-card rounded-3xl p-8">
+                        <h3 class="text-2xl font-semibold tracking-tight mb-5 text-white">如何把这个博客改成你的？</h3>
+                        
+                        <div class="space-y-5 text-sm text-slate-300">
+                            <div class="flex gap-4">
+                                <div class="font-mono text-emerald-400 font-bold w-5">1</div>
+                                <div>用记事本或 VS Code 打开 <span class="font-semibold text-slate-100">index.html</span></div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="font-mono text-emerald-400 font-bold w-5">2</div>
+                                <div>找到页面最上面的 <span class="font-semibold text-slate-100">blogConfig</span> 那一段，把名字、介绍、头像地址都改成你自己的</div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="font-mono text-emerald-400 font-bold w-5">3</div>
+                                <div>继续往下找到 <span class="font-semibold text-slate-800">posts</span>，可以删除、修改或新增文章</div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="font-mono text-emerald-600 font-bold w-5">4</div>
+                                <div>保存后双击 index.html 就能看到新效果了</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8 pt-6 text-xs text-slate-500">
+                            提示：想换头像？把你的照片放到这个文件夹里，然后把 avatar 那一行改成 <span class="font-mono">"./我的照片.jpg"</span>
+                        </div>
+                        
+                        <button onclick="this.closest('.fixed').remove()" 
+                                class="mt-6 w-full py-3 bg-emerald-600 text-white rounded-2xl font-medium">
+                            我知道了
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', tipHTML);
+        }
+        
+        // 键盘支持
+        function initKeyboardShortcuts() {
+            document.addEventListener('keydown', function(e) {
+                if (e.key === '/' && document.activeElement.tagName === 'BODY') {
+                    e.preventDefault();
+                    document.getElementById('search-input').focus();
+                }
+                if (e.key === 'Escape') {
+                    // 优先关闭各种弹窗
+                    const dadModal = document.getElementById('dad-chat-modal');
+                    if (dadModal && !dadModal.classList.contains('hidden')) {
+                        closeDadChat();
+                        return;
+                    }
+                    const postModal = document.getElementById('post-modal');
+                    if (postModal && !postModal.classList.contains('hidden')) {
+                        closeModal();
+                        return;
+                    }
+                    const qqModal = document.getElementById('qq-modal');
+                    if (qqModal && !qqModal.classList.contains('hidden')) {
+                        closeQQModal();
+                    }
+                }
+            });
+            
+            // 提示用户可以按 / 搜索
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('focus', function() {
+                if (!searchInput.placeholder.includes('按 /')) {
+                    searchInput.placeholder = '搜索文章...（按 / 快速聚焦）';
+                }
+            });
+            
+            // 隐藏小彩蛋：搜索框输入「爹」或「爸爸」会直接召唤问小夜
+            searchInput.addEventListener('input', function() {
+                const val = searchInput.value.trim();
+                if (val === '爹' || val === '爸爸' || val === '问小夜') {
+                    searchInput.value = '';
+                    setTimeout(() => {
+                        const dadModal = document.getElementById('dad-chat-modal');
+                        if (dadModal && dadModal.classList.contains('hidden')) {
+                            openDadChat();
+                        }
+                    }, 80);
+                }
+            });
+        }
+        
+        // ==================== 毒舌爸爸彩蛋逻辑 ====================
+        
+        // 躺尸状态轮换（点击状态栏触发）
+        const dadStatuses = [
+            "目前在互联网沉睡",
+            "正在假死中…别碰",
+            "已开启植物人模式",
+            "拒绝一切社交请求",
+            "正在思考人生（其实在发呆）",
+            "已进入节能模式",
+            "困困的，请勿打扰"
+        ];
+        let currentStatusIndex = 0;
+
+        function cycleDadStatus() {
+            const el = document.getElementById('dad-status');
+            if (!el) return;
+            
+            currentStatusIndex = (currentStatusIndex + 1) % dadStatuses.length;
+            el.style.transition = 'opacity 0.15s';
+            el.style.opacity = '0';
+            
+            setTimeout(() => {
+                el.innerText = dadStatuses[currentStatusIndex];
+                el.style.opacity = '1';
+            }, 150);
+            
+            // 额外彩蛋：连续点几次会触发特殊吐槽
+            if (currentStatusIndex === 3) {
+                setTimeout(() => {
+                    if (el.innerText.includes('拒绝')) {
+                        el.innerText = "你再点我试试？";
+                    }
+                }, 1200);
+            }
+        }
+
+        function initDadStatus() {
+            // 初始状态已经在 HTML 里写死，这里可以做额外初始化
+            const el = document.getElementById('dad-status');
+            if (el) {
+                el.title = "点我换个躺尸姿势";
+            }
+        }
+
+        // 问小夜 - 超级毒舌回复库
+        const dadReplies = [
+            "有事说事，没事滚。",
+            "你问这个干嘛？自己想。",
+            "我在躺尸，别来烦我。",
+            "这个问题问得像个傻子。",
+            "爸爸现在没空，过会儿再问（永远别问）。",
+            "你是不是又在浪费我的时间？",
+            "少御又来了是吧。",
+            "钱？没有。梦想？更没有。",
+            "你配吗？别做梦了。",
+            "躺着不香吗？非要起来作死。",
+            "我现在只想躺着，别说话。",
+            "你这问题我懒得回答，下一个。",
+            "自己去百度，别来问我。",
+            "又在表演什么？演技挺差。",
+            "别废话，我在假死。",
+            "你是不是脑子进水了？",
+            "这个问题我回答了你也不会懂。",
+            "我现在的心情是：不想理你。",
+            "滚去写你的作业/代码/文章吧。",
+            "爸爸的耐心已经用完了。",
+            "你再问一句我就真的不理了。",
+            "这个破问题关我什么事？",
+            "我现在是植物人状态，听不见。",
+            "你确定你不是来找骂的？"
+        ];
+
+        function getDadReply(question) {
+            const q = question.toLowerCase().trim();
+            
+            // 关键词触发（更毒）
+            if (q.includes('钱') || q.includes('打钱') || q.includes('工资') || q.includes('借')) {
+                return "钱是吧？自己去挣，别来问我。";
+            }
+            if (q.includes('女朋友') || q.includes('对象') || q.includes('老婆') || q.includes('女') || q.includes('结婚')) {
+                return "你配吗？先照照镜子再说。";
+            }
+            if (q.includes('你好') || q.includes('爹') || q.includes('爸爸') || q.includes('老爹')) {
+                return "有事说事，没事滚。";
+            }
+            if (q.includes('为什么') || q.includes('怎么') || q.includes('为啥')) {
+                return "为什么？因为你笨啊。";
+            }
+            if (q.includes('滚') || q.includes('烦') || q.includes('走') || q.includes('闭嘴')) {
+                return "你先滚，我躺着呢。";
+            }
+            if (q.includes('工作') || q.includes('努力') || q.includes('上班')) {
+                return "努力？躺着不香吗？";
+            }
+            if (q.includes('博客') || q.includes('网站') || q.includes('文章')) {
+                return "这个破站你还想让我维护？自己看着办。";
+            }
+            if (q.includes('爱') || q.includes('喜欢')) {
+                return "爱是啥？能吃吗？";
+            }
+            if (q.includes('累') || q.includes('倦') || q.includes('困')) {
+                return "你累？我比你累多了，别吵。";
+            }
+            
+            // 普通随机毒舌
+            return dadReplies[Math.floor(Math.random() * dadReplies.length)];
+        }
+
+        // 问小夜弹窗控制
+        let dadChatInitialized = false;
+
+        function openDadChat() {
+            const modal = document.getElementById('dad-chat-modal');
+            const input = document.getElementById('dad-chat-input');
+            const area = document.getElementById('dad-chat-area');
+            
+            if (!modal) return;
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+            
+            // 第一次打开时显示爸爸的冷漠开场白
+            if (!dadChatInitialized && area) {
+                area.innerHTML = '';
+                appendMessage('dad', "有事说事，没事别废话。", area);
+                dadChatInitialized = true;
+            }
+            
+            // 自动聚焦输入框
+            setTimeout(() => {
+                if (input) input.focus();
+            }, 180);
+        }
+
+        function closeDadChat() {
+            const modal = document.getElementById('dad-chat-modal');
+            if (modal) {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        }
+
+        function appendMessage(type, text, container) {
+            const msg = document.createElement('div');
+            
+            if (type === 'user') {
+                msg.className = 'flex justify-end';
+                msg.innerHTML = `
+                    <div class="max-w-[78%] bg-emerald-600 text-white px-4 py-2.5 rounded-2xl rounded-tr-sm text-sm">
+                        ${text}
+                    </div>
+                `;
+            } else {
+                msg.className = 'flex justify-start';
+                msg.innerHTML = `
+                    <div class="max-w-[82%] flex gap-2">
+                        <div class="w-6 h-6 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <i class="fa-solid fa-user-tie text-xs"></i>
+                        </div>
+                        <div class="bg-slate-800 text-slate-200 px-4 py-2.5 rounded-2xl rounded-tl-sm text-sm">
+                            ${text}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            container.appendChild(msg);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function sendDadMessage() {
+            const input = document.getElementById('dad-chat-input');
+            const area = document.getElementById('dad-chat-area');
+            if (!input || !area || !input.value.trim()) return;
+            
+            const question = input.value.trim();
+            
+            // 显示用户消息
+            appendMessage('user', question, area);
+            
+            // 清空输入框
+            input.value = '';
+            
+            // 模拟爸爸思考 + 回复（带一点延迟，更真实）
+            setTimeout(() => {
+                const reply = getDadReply(question);
+                appendMessage('dad', reply, area);
+            }, 420);
+        }
+
+        // ==================== 高级程序员装逼彩蛋（技术痕迹区） ====================
+        
+        // --- Matrix 代码雨 ---
+        let matrixAnimation = null;
+        
+        function startMatrixRain() {
+            const canvas = document.getElementById('matrix-canvas');
+            if (!canvas) return;
+            
+            canvas.classList.remove('hidden');
+            canvas.classList.add('block');
+            
+            const ctx = canvas.getContext('2d', { alpha: true });
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+            const fontSize = 14;
+            const columns = Math.floor(canvas.width / fontSize);
+            const drops = Array(columns).fill(1);
+            
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = '#10b981';
+                ctx.font = fontSize + 'px monospace';
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars[Math.floor(Math.random() * chars.length)];
+                    const x = i * fontSize;
+                    const y = drops[i] * fontSize;
+                    
+                    ctx.fillText(text, x, y);
+                    
+                    if (y > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+            
+            if (matrixAnimation) clearInterval(matrixAnimation);
+            matrixAnimation = setInterval(draw, 38);
+            
+            // 12秒后自动消失
+            setTimeout(() => {
+                stopMatrixRain();
+            }, 12000);
+        }
+        
+        function stopMatrixRain() {
+            const canvas = document.getElementById('matrix-canvas');
+            if (matrixAnimation) {
+                clearInterval(matrixAnimation);
+                matrixAnimation = null;
+            }
+            if (canvas) {
+                canvas.classList.add('hidden');
+                canvas.classList.remove('block');
+            }
+        }
+        
+        // --- Konami Code（上上下下左右左右BA）---
+        let konamiBuffer = [];
+        const KONAMI_CODE = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+        
+        function initKonamiCode() {
+            document.addEventListener('keydown', function(e) {
+                konamiBuffer.push(e.key);
+                if (konamiBuffer.length > KONAMI_CODE.length) {
+                    konamiBuffer.shift();
+                }
+                if (konamiBuffer.join(',') === KONAMI_CODE.join(',')) {
+                    konamiBuffer = [];
+                    startMatrixRain();
+                    // 额外毒舌提示
+                    setTimeout(() => {
+                        const toast = document.createElement('div');
+                        toast.className = 'fixed bottom-20 left-1/2 -translate-x-1/2 z-[210] bg-black/80 text-emerald-400 text-xs px-4 py-2 rounded-2xl font-mono';
+                        toast.textContent = '又在玩这些没用的东西？';
+                        document.body.appendChild(toast);
+                        setTimeout(() => toast.remove(), 1800);
+                    }, 600);
+                }
+            });
+        }
+        
+        // --- 爸爸的终端 ---
+        const terminalHistory = [];
+        let historyIndex = -1;
+        
+        function initTerminal() {
+            const input = document.getElementById('terminal-input');
+            const output = document.getElementById('terminal-output');
+            if (!input || !output) return;
+            
+            // 开场白
+            output.innerHTML = `
+                <div class="text-emerald-600/70">欢迎来到小夜的终端。输入 help 看看你能干什么。</div>
+                <div class="text-emerald-600/70 text-[12px]">（大部分命令都没用，跟我一样）</div>
+            `;
+            
+            // 自动聚焦（点击终端区域）
+            const body = document.getElementById('terminal-body');
+            if (body) {
+                body.addEventListener('click', () => input.focus());
+            }
+            
+            // 初始聚焦
+            setTimeout(() => input.focus(), 600);
+        }
+        
+        function handleTerminalInput(e) {
+            const input = document.getElementById('terminal-input');
+            const output = document.getElementById('terminal-output');
+            if (!input || !output) return;
+            
+            if (e.key === 'Enter') {
+                const cmd = input.value.trim();
+                if (!cmd) return;
+                
+                // 打印输入的命令
+                const line = document.createElement('div');
+                line.className = 'flex gap-2';
+                line.innerHTML = `<span class="text-emerald-500 select-none">$</span><span class="text-emerald-300">${cmd}</span>`;
+                output.appendChild(line);
+                
+                // 执行命令
+                executeTerminalCommand(cmd, output);
+                
+                terminalHistory.push(cmd);
+                historyIndex = terminalHistory.length;
+                
+                input.value = '';
+                output.scrollTop = output.scrollHeight;
+            }
+            
+            // 上下键历史
+            if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    input.value = terminalHistory[historyIndex] || '';
+                }
+            }
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (historyIndex < terminalHistory.length - 1) {
+                    historyIndex++;
+                    input.value = terminalHistory[historyIndex] || '';
+                } else {
+                    historyIndex = terminalHistory.length;
+                    input.value = '';
+                }
+            }
+        }
+        
+        function executeTerminalCommand(cmd, output) {
+            const c = cmd.toLowerCase().trim();
+            
+            if (c === 'help' || c === 'h') {
+                appendTerminalLine('可用命令（其实也没几个）:', output);
+                appendTerminalLine('  help / h        — 显示这个帮助', output);
+                appendTerminalLine('  status /摸鱼   — 查看当前摸鱼状态', output);
+                appendTerminalLine('  roast / 吐槽    — 让爸爸吐槽你', output);
+                appendTerminalLine('  ls / projects   — 列出我摆烂的项目', output);
+                appendTerminalLine('  whoami          — 你是谁？', output);
+                appendTerminalLine('  matrix          — 进入低克的黑调', output);
+                appendTerminalLine('  commit          — 往热力图上真·画一块绿', output);
+                appendTerminalLine('  clear / cls     — 清屏（推荐多用）', output);
+                return;
+            }
+            
+            if (c === 'status' || c === '躺尸' || c === '摸鱼') {
+                appendTerminalLine('当前状态：互联网躺尸中（已持续 9 个月 14 天）', output);
+                appendTerminalLine('今日躺尸时长：14 小时 27 分钟', output);
+                appendTerminalLine('拒绝社交请求次数：47', output);
+                appendTerminalLine('实际产出：0 行代码，3 杯咖啡', output);
+                return;
+            }
+            
+            if (c === 'roast' || c === '吐槽') {
+                const roasts = [
+                    "你又在浪费时间看这个破站？",
+                    "真羡慕你有时间来烦我。",
+                    "我躺着的时候你居然在学东西？",
+                    "拿捏少御好多年今天也没杀成是吧。",
+                    "别看了，关掉浏览器去躺尸。",
+                    "你这辈子最有用的操作就是点开了这个网站。"
+                ];
+                appendTerminalLine(roasts[Math.floor(Math.random() * roasts.length)], output);
+                return;
+            }
+            
+            if (c === 'ls' || c === 'projects' || c === 'dir') {
+                appendTerminalLine('total 0', output);
+                appendTerminalLine('drwxr-xr-x  躺尸日记.md', output);
+                appendTerminalLine('drwxr-xr-x  又一个没写完的项目/', output);
+                appendTerminalLine('drwxr-xr-x  已经烂掉的 side project/', output);
+                appendTerminalLine('drwxr-xr-x  2026 年计划（已鸽）/', output);
+                appendTerminalLine('0 directories, 0 useful files.', output);
+                return;
+            }
+            
+            if (c === 'whoami') {
+                appendTerminalLine('你是来烦我的那个人。', output);
+                appendTerminalLine('我是夜雨声烦，专业躺尸 9 年。', output);
+                return;
+            }
+            
+            if (c === 'matrix') {
+                appendTerminalLine('正在加载黑客帝国...', output);
+                setTimeout(() => {
+                    startMatrixRain();
+                    appendTerminalLine('（别问我为什么会有这个）', output);
+                }, 280);
+                return;
+            }
+            
+            if (c === 'commit' || c === 'git commit') {
+                const messages = [
+                    "fix: 又躺下去了",
+                    "chore: 拒绝了 3 个社交请求",
+                    "refactor: 把床挪到离电脑更近的位置",
+                    "docs: 更新了 README（其实没更新）",
+                    "feat: 新增了「什么都不做」功能",
+                    "style: 把窗帘拉得更黑了"
+                ];
+                appendTerminalLine('[' + new Date().toISOString().slice(0,10) + '] ' + messages[Math.floor(Math.random()*messages.length)], output);
+                appendTerminalLine('1 file changed, 0 insertions(+), 0 deletions(-)', output);
+
+                // 核心彩蛋：真正往热力图上添加一个提交格子
+                addLiveCommitToHeatmap();
+                return;
+            }
+            
+            if (c === 'clear' || c === 'cls') {
+                output.innerHTML = '';
+                return;
+            }
+            
+            // 默认回复
+            appendTerminalLine('command not found: ' + cmd + ' （我懒得实现这个命令）', output);
+            appendTerminalLine('输入 help 看看你还能干什么。', output);
+        }
+        
+        function appendTerminalLine(text, output) {
+            const div = document.createElement('div');
+            div.className = 'text-emerald-300/90 whitespace-pre-wrap';
+            div.textContent = text;
+            output.appendChild(div);
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        // --- 小夜の热力图（SVG）---
+        function generateHeatmap() {
+            const container = document.getElementById('heatmap-container');
+            if (!container) return;
+            
+            const weeks = 52;
+            const days = 7;
+            const cell = 11;
+            const gap = 3;
+            const width = weeks * (cell + gap) + 20;
+            const height = days * (cell + gap) + 30;
+            
+            let svg = `<svg width="${width}" height="${height}" class="min-w-full">`;
+            
+            // 月份标签（简化）
+            svg += `<text x="20" y="10" font-size="9" fill="#64748b">Jan</text>`;
+            svg += `<text x="${20 + 13*4}" y="10" font-size="9" fill="#64748b">Apr</text>`;
+            svg += `<text x="${20 + 13*8}" y="10" font-size="9" fill="#64748b">Jul</text>`;
+            svg += `<text x="${20 + 13*11}" y="10" font-size="9" fill="#64748b">Oct</text>`;
+            
+            const sarcasticMessages = [
+                "fix: 又躺下去了",
+                "chore: 拒绝社交 3 小时",
+                "refactor: 继续摆烂",
+                "docs: 写了半行注释就睡觉了",
+                "feat: 新增「什么都不干」功能",
+                "style: 把窗帘拉得更黑",
+                "test: 验证了床的舒适度",
+                "perf: 优化了躺尸姿势"
+            ];
+            
+            for (let w = 0; w < weeks; w++) {
+                for (let d = 0; d < days; d++) {
+                    const x = 20 + w * (cell + gap);
+                    const y = 16 + d * (cell + gap);
+                    
+                    // 让热力图看起来「努力但其实很懒」
+                    let intensity = Math.random();
+                    if (w > 40) intensity = Math.random() * 0.4; // 年底更懒
+                    if (d === 0 || d === 6) intensity *= 1.6;    // 周末偶尔活跃
+                    
+                    let color = '#f1f5f9';
+                    if (intensity > 0.82) color = '#10b981';
+                    else if (intensity > 0.65) color = '#34d399';
+                    else if (intensity > 0.42) color = '#a7f3d0';
+                    
+                    const msg = sarcasticMessages[Math.floor(Math.random() * sarcasticMessages.length)];
+                    const title = `${msg} (${Math.floor(Math.random()*3)+1} contributions)`;
+                    
+                    svg += `<rect x="${x}" y="${y}" width="${cell}" height="${cell}" rx="2" ry="2" fill="${color}">
+                        <title>${title}</title>
+                    </rect>`;
+                }
+            }
+            
+            svg += `</svg>`;
+            container.innerHTML = svg;
+        }
+
+        // 实时添加提交到热力图（在终端输入 commit 时触发）
+        function addLiveCommitToHeatmap() {
+            const container = document.getElementById('heatmap-container');
+            const svg = container ? container.querySelector('svg') : null;
+            if (!svg) return;
+
+            const cell = 11;
+            const gap = 3;
+
+            // 优先在“懒惰区域”（后半部分 + 周末）随机找位置
+            const w = Math.floor(Math.random() * 52);
+            const d = Math.random() > 0.6 ? (Math.random() > 0.5 ? 0 : 6) : Math.floor(Math.random() * 7);
+
+            const x = 20 + w * (cell + gap);
+            const y = 16 + d * (cell + gap);
+
+            const colors = ['#10b981', '#34d399', '#a7f3d0'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+
+            const sarcastic = [
+                "fix: 又摆烂了一次",
+                "chore: 拒绝了社交",
+                "style: 窗帘拉得更黑",
+                "feat: 什么都没干",
+                "perf: 躺姿优化"
+            ];
+            const title = sarcastic[Math.floor(Math.random() * sarcastic.length)] + " (实时提交)";
+
+            const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+            rect.setAttribute("x", x);
+            rect.setAttribute("y", y);
+            rect.setAttribute("width", cell);
+            rect.setAttribute("height", cell);
+            rect.setAttribute("rx", "2");
+            rect.setAttribute("ry", "2");
+            rect.setAttribute("fill", color);
+            rect.setAttribute("class", "live-heatmap-cell");
+
+            const titleEl = document.createElementNS("http://www.w3.org/2000/svg", "title");
+            titleEl.textContent = title;
+            rect.appendChild(titleEl);
+
+            svg.appendChild(rect);
+
+            // 同步更新右上角的提交计数（假装多了一次）
+            const countEl = document.getElementById('commit-count');
+            if (countEl) {
+                const current = parseInt(countEl.textContent) || 47;
+                countEl.textContent = (current + 1) + " commits";
+            }
+
+            // 搞笑 toast
+            showSarcasticToast("小夜又在热力图上画了一块绿（真·实时）");
+        }
+
+        // 极简毒舌 toast（复用现有风格）
+        function showSarcasticToast(text) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-20 left-1/2 -translate-x-1/2 z-[300] bg-black/80 text-emerald-400 text-xs px-4 py-2 rounded-2xl font-mono shadow-lg';
+            toast.textContent = text;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.transition = 'all 0.3s';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 200);
+            }, 1600);
+        }
+        
+        // 初始化一切
+        function initBlog() {
+            initPersonalInfo();
+            renderPosts(posts);
+            initKeyboardShortcuts();
+            initDadStatus();      // 状态栏点击切换
+            initTerminal();       // 终端
+            generateHeatmap();    // 热力图
+            initKonamiCode();     // Konami 彩蛋
+        }
+        
+        // 最终启动（所有函数定义完成后调用）
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof initBlog === 'function') {
+                initBlog();
+            }
+        });
+    </script>
+</body>
+</html>
